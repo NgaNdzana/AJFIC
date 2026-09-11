@@ -1,0 +1,13 @@
+{
+  "description": "Connects legal and fiscal professionals in Cameroon by providing news, resources, event updates, and streamlined membership registration with secure document upload and payment.",
+  "icons": {
+    "icon": "/favicon.png"
+  },
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
