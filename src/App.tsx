@@ -58,28 +58,26 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled
 }
 
-type Page = 'home' | 'about' | 'platform' | 'adhesion' | 'contact'
+type Page = 'home' | 'about' | 'platform' | 'adhesion' | 'contact' | 'sponsoring'
 
 // ── Shared UI ─────────────────────────────────────────────────────────────
 
-function NavBar({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
+function NavBar({ page, setPage, darkMode, setDarkMode }: { page: Page; setPage: (p: Page) => void; darkMode: boolean; setDarkMode: (d: boolean) => void }) {
   const [open, setOpen] = useState(false)
   const links: { label: string; id: Page }[] = [
     { label: 'Accueil', id: 'home' },
     { label: 'À Propos', id: 'about' },
-    { label: 'IUS PRIV', id: 'platform' },
+    { label: 'Publication scientifique', id: 'platform' },
+    { label: 'Sponsoring', id: 'sponsoring' },
     { label: 'Contact', id: 'contact' },
   ]
   const go = (p: Page) => { setPage(p); setOpen(false); window.scrollTo(0, 0) }
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0D3B5E] shadow-xl">
+    <header className={`sticky top-0 z-50 shadow-xl ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#0D3B5E]'}`}>
       <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
         <button onClick={() => go('home')} className="flex items-center gap-3 shrink-0">
-          <img src={ajficLogo} alt="AJFIC" className="h-10 w-auto brightness-0 invert" />
-          <span className="hidden sm:block text-[10px] font-semibold tracking-[0.2em] uppercase text-[#E8705A] border-l border-white/20 pl-3">
-            × IUS PRIV
-          </span>
+          <img src={ajficLogo} alt="AJFIC" className="h-10 w-auto" />
         </button>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -88,7 +86,7 @@ function NavBar({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
               key={l.id}
               onClick={() => go(l.id)}
               className={`text-sm font-medium tracking-wide transition-colors duration-150 ${
-                page === l.id ? 'text-[#E8705A]' : 'text-white/75 hover:text-white'
+                page === l.id ? 'text-[#E8705A]' : darkMode ? 'text-white/75 hover:text-white' : 'text-white/75 hover:text-white'
               }`}
             >
               {l.label}
@@ -100,21 +98,37 @@ function NavBar({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
           >
             Adhérer
           </button>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="ml-2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
         </nav>
 
-        <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? 'opacity-0' : ''}`} />
-          <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`} />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+          <button
+            className="flex flex-col gap-1.5 p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Menu"
+          >
+            <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? 'opacity-0' : ''}`} />
+            <span className={`block h-0.5 w-6 bg-white transition-all duration-200 ${open ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
+        </div>
       </div>
 
       {open && (
-        <div className="md:hidden bg-[#082A45] px-6 pb-6 pt-2 flex flex-col gap-4 border-t border-white/10">
+        <div className={`md:hidden px-6 pb-6 pt-2 flex flex-col gap-4 border-t border-white/10 ${darkMode ? 'bg-[#16213e]' : 'bg-[#082A45]'}`}>
           {links.map(l => (
             <button
               key={l.id}
@@ -136,15 +150,15 @@ function NavBar({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
   )
 }
 
-function Footer({ setPage }: { setPage: (p: Page) => void }) {
+function Footer({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode: boolean }) {
   const go = (p: Page) => { setPage(p); window.scrollTo(0, 0) }
   return (
-    <footer className="bg-[#082A45] text-white/60">
+    <footer className={darkMode ? 'bg-[#1a1a2e] text-white/60' : 'bg-[#082A45] text-white/60'}>
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div className="sm:col-span-2">
-          <img src={ajficLogo} alt="AJFIC" className="h-14 w-auto mb-5 brightness-0 invert" />
+          <img src={ajficLogo} alt="AJFIC" className="h-14 w-auto mb-5" />
           <p className="text-sm leading-relaxed max-w-sm text-white/50">
-            L'Association des Jeunes Juristes et Fiscalistes du Cameroun — une communauté d'excellence au service du droit et de la fiscalité, en partenariat avec IUS PRIV.
+            L'Association des Jeunes Juristes et Fiscalistes du Cameroun — une communauté d'excellence au service du droit et de la fiscalité.
           </p>
           <div className="flex gap-5 mt-6">
             {['LinkedIn', 'Facebook', 'WhatsApp'].map(s => (
@@ -152,14 +166,17 @@ function Footer({ setPage }: { setPage: (p: Page) => void }) {
                 {s}
               </a>
             ))}
+            <a href="#" className="text-xs text-[#E8705A] hover:text-[#f08878] transition-colors font-semibold tracking-wide">
+              TikTok (@Ajowe Eiktok)
+            </a>
           </div>
         </div>
 
         <div>
           <h4 className="text-white text-xs font-semibold mb-5 tracking-[0.15em] uppercase">Navigation</h4>
           <ul className="space-y-3 text-sm">
-            {(['Accueil', 'À Propos', 'IUS PRIV', 'Adhésion', 'Contact'] as const).map((label, i) => {
-              const pages: Page[] = ['home', 'about', 'platform', 'adhesion', 'contact']
+            {(['Accueil', 'À Propos', 'Publication scientifique', 'Sponsoring', 'Adhésion', 'Contact'] as const).map((label, i) => {
+              const pages: Page[] = ['home', 'about', 'platform', 'sponsoring', 'adhesion', 'contact']
               return (
                 <li key={label}>
                   <button onClick={() => go(pages[i])} className="hover:text-white transition-colors">
@@ -180,14 +197,14 @@ function Footer({ setPage }: { setPage: (p: Page) => void }) {
                 contact@ajfic.cm
               </a>
             </li>
-            <li>+237 699 000 000</li>
+            <li>+237 69750 3177/177/65009386</li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-white/30">
-          <span>© 2025 AJFIC × IUS PRIV. Tous droits réservés.</span>
+          <span>© 2026 AJFIC. Tous droits réservés.</span>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white/60">Mentions légales</a>
             <a href="#" className="hover:text-white/60">Confidentialité</a>
@@ -225,13 +242,13 @@ const NEWS = [
 ]
 
 const STATS = [
-  { value: '450+', label: 'Membres actifs' },
+  { value: '42', label: 'Membres actifs' },
   { value: '32', label: 'Événements organisés' },
-  { value: '8', label: 'Partenaires stratégiques' },
-  { value: '5 ans', label: "D'excellence" },
+  { value: '01', label: 'Partenaire stratégique (UCAC)' },
+  { value: '2026', label: "Année de création" },
 ]
 
-function HomePage({ setPage }: { setPage: (p: Page) => void }) {
+function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode: boolean }) {
   const go = (p: Page) => { setPage(p); window.scrollTo(0, 0) }
   const [shuffledImages, setShuffledImages] = useState(() => shuffleArray(GALLERY_IMAGES))
 
@@ -245,8 +262,25 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-[#082A45]/90 via-[#0D3B5E]/70 to-[#0D3B5E]/50" />
 
+        {/* Animated decorative elements */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#E8705A]/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute top-40 right-20 w-48 h-48 bg-[#E8705A]/10 rounded-full blur-3xl animate-float-delayed" />
+        <div className="absolute bottom-32 left-1/4 w-24 h-24 bg-[#E8705A]/15 rounded-full blur-2xl animate-pulse-glow" />
+        <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-white/10 rounded-full blur-xl animate-float animation-delay-400" />
+
+        {/* Floating images */}
+        <div className="absolute top-32 right-16 w-20 h-20 rounded-xl overflow-hidden shadow-2xl animate-float animation-delay-200 opacity-40">
+          <img src={img2} alt="AJFIC" className="w-full h-full object-cover" />
+        </div>
+        <div className="absolute bottom-40 right-32 w-16 h-16 rounded-xl overflow-hidden shadow-2xl animate-float-delayed animation-delay-600 opacity-30">
+          <img src={img3} alt="AJFIC" className="w-full h-full object-cover" />
+        </div>
+        <div className="absolute top-1/2 left-20 w-14 h-14 rounded-xl overflow-hidden shadow-2xl animate-float animation-delay-800 opacity-25">
+          <img src={img4} alt="AJFIC" className="w-full h-full object-cover" />
+        </div>
+
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <div className="animate-slide-in-left">
             <span className="inline-block text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-6 border border-[#E8705A]/40 px-3 py-1.5 rounded-full">
               AJFIC × IUS PRIV — Depuis 2020
             </span>
@@ -256,7 +290,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
               en droit et fiscalité
             </h1>
             <p className="text-white/65 text-lg leading-relaxed mb-10 max-w-lg">
-              L'AJFIC fédère les jeunes professionnels du droit et de la fiscalité au Cameroun, en partenariat avec IUS PRIV pour une communication juridique d'excellence.
+              L'AJFIC fédère les jeunes juristes et les jeunes professionnelles du droit des affaires et de la fiscalité autour des enjeux juridiques et fiscaux contemporains.
             </p>
             <div className="flex flex-wrap gap-4">
               <button
@@ -274,7 +308,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             </div>
           </div>
 
-          <div className="hidden lg:grid grid-cols-2 gap-4">
+          <div className="hidden lg:grid grid-cols-2 gap-4 animate-slide-in-right animation-delay-400">
             {STATS.map(s => (
               <div key={s.label} className="bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
                 <div className="font-display text-4xl font-bold text-[#E8705A] mb-1">{s.value}</div>
@@ -282,6 +316,315 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Why Join Section */}
+      <section className={darkMode ? 'bg-[#1a1a2e] py-20 px-6' : 'bg-white py-20 px-6'}>
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Pourquoi nous rejoindre ?</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            Pourquoi adhérer à l'AJFIC ?
+          </h2>
+          <p className="text-[#6B7280] text-lg leading-relaxed mb-10">
+            L'AJFIC offre un cadre unique pour développer vos compétences, élargir votre réseau professionnel et accéder à des opportunités de carrière dans le domaine du droit des affaires et de la fiscalité.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { icon: '🎓', title: 'Formation continue', desc: 'Ateliers, séminaires et conférences pour enrichir vos connaissances juridiques et fiscales.' },
+              { icon: '🤝', title: 'Réseau professionnel', desc: 'Connectez-vous avec des juristes, fiscalistes et experts du Cameroun et de la CEMAC.' },
+              { icon: '📈', title: 'Opportunités de carrière', desc: 'Accès privilégié aux offres d\'emploi, stages et partenariats avec des entreprises et cabinets.' },
+            ].map((benefit, index) => (
+              <div key={index} className={`rounded-2xl p-6 hover:shadow-lg transition-shadow ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+                <div className="text-3xl mb-4">{benefit.icon}</div>
+                <h3 className="font-semibold text-[#0D3B5E] mb-2">{benefit.title}</h3>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{benefit.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Section - 4 Pillars */}
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Notre Mission</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Notre mission repose sur 4 piliers
+            </h2>
+            <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
+              Une vision structurée pour former, accompagner et connecter les jeunes juristes et fiscalistes du Cameroun.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                number: '01',
+                icon: '🔬',
+                title: 'Recherche',
+                description: 'Produire et diffuser des connaissances en droit des affaires et fiscalité pour contribuer à l\'excellence académique et professionnelle.',
+                details: ['Publications scientifiques', 'Analyses juridiques', 'Études de cas']
+              },
+              {
+                number: '02',
+                icon: '📚',
+                title: 'Formation',
+                description: 'Promotion des jeunes juristes et jeunes fiscalistes à travers des programmes de formation adaptés aux réalités du marché.',
+                details: ['Ateliers pratiques', 'Séminaires thématiques', 'Mentorat personnalisé']
+              },
+              {
+                number: '03',
+                icon: '💼',
+                title: 'Préparation professionnelle',
+                description: 'Préparer les jeunes étudiants au monde professionnel en intensifiant les aptitudes des jeunes professionnels.',
+                details: ['Simulation d\'entretiens', 'Rédaction de CV', 'Techniques de présentation']
+              },
+              {
+                number: '04',
+                icon: '🌐',
+                title: 'Réseau solide',
+                description: 'Bâtir un lien durable entre les professionnels, les entreprises, les organisations internationales expérimentées et les jeunes juristes et fiscalistes.',
+                details: ['Événements networking', 'Partenariats stratégiques', 'Plateforme digitale']
+              },
+            ].map((pillar, index) => (
+              <div key={index} className={`rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
+                <div className="flex items-start gap-6">
+                  <div className="shrink-0">
+                    <div className="text-4xl font-display font-bold text-[#E8705A]/30">{pillar.number}</div>
+                    <div className="text-3xl mt-2">{pillar.icon}</div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-3">{pillar.title}</h3>
+                    <p className="text-[#6B7280] leading-relaxed mb-4">{pillar.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {pillar.details.map((detail, i) => (
+                        <span key={i} className="text-xs bg-[#EBF2F8] text-[#0D3B5E] px-3 py-1 rounded-full font-medium">
+                          {detail}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Intervention Domains */}
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Domaines d'intervention</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Nos domaines d'intervention
+            </h2>
+            <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
+              Une expertise couvrant les principaux domaines du droit des affaires et de la fiscalité au Cameroun.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className={`rounded-2xl p-8 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-[#E8705A]/20 rounded-xl flex items-center justify-center">
+                  <span className="text-2xl">⚖️</span>
+                </div>
+                <h3 className="font-display text-2xl font-bold text-[#0D3B5E]">Droit des affaires</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  'Arbitrage',
+                  'Sociétés commerciales',
+                  'Voie d\'exécution',
+                  'Procédure de recouvrement',
+                  'Droit commercial général'
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3 text-[#4B5563]">
+                    <span className="w-2 h-2 bg-[#E8705A] rounded-full shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className={`rounded-2xl p-8 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-[#E8705A]/20 rounded-xl flex items-center justify-center">
+                  <span className="text-2xl">📊</span>
+                </div>
+                <h3 className="font-display text-2xl font-bold text-[#0D3B5E]">Fiscalité</h3>
+              </div>
+              <ul className="space-y-3">
+                {[
+                  'Fiscalité locale',
+                  'Fiscalité internationale',
+                  'Fiscalité des particuliers',
+                  'Douanes',
+                  'Procédures fiscales'
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3 text-[#4B5563]">
+                    <span className="w-2 h-2 bg-[#E8705A] rounded-full shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Events */}
+      <section className="bg-[#0D3B5E] py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Événements</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-6">
+              Prochains événements
+            </h2>
+            <p className="text-white/60 text-lg max-w-3xl mx-auto">
+              Découvrez nos prochaines formations, conférences et ateliers.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                title: 'Séminaires sur la loi de finance',
+                type: 'Formation',
+                icon: '📜',
+                description: 'Analyse approfondie des nouvelles dispositions de la loi de finance et leurs impacts.'
+              },
+              {
+                title: 'Conférences droits des affaires/fiscalités',
+                type: 'Conférence',
+                icon: '🎤',
+                description: 'Échanges avec des experts sur les enjeux contemporains du droit des affaires.'
+              },
+              {
+                title: 'Ateliers de rédaction des actes juridiques et d\'articles scientifiques',
+                type: 'Atelier',
+                icon: '✍️',
+                description: 'Formation pratique à la rédaction professionnelle et académique.'
+              },
+              {
+                title: 'Séminaire de formation en prise de parole en public',
+                type: 'Formation',
+                icon: '🎯',
+                description: 'Développez vos compétences en communication et présentation.'
+              },
+              {
+                title: 'Les journées AJFIC',
+                type: 'Événement',
+                icon: '🎉',
+                description: 'Nos journées portes ouvertes pour découvrir l\'association et ses activités.'
+              },
+            ].map((event, index) => (
+              <div key={index} className={`backdrop-blur-sm border rounded-2xl p-6 hover:bg-white/15 transition-colors ${darkMode ? 'bg-white/10 border-white/20' : 'bg-white/10 border-white/20'}`}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-2xl">{event.icon}</span>
+                  <span className="text-xs font-semibold tracking-wide uppercase text-[#E8705A] bg-[#E8705A]/20 px-2 py-1 rounded-full">
+                    {event.type}
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-white text-lg mb-3">{event.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">{event.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Témoignages</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Ce que disent nos membres
+            </h2>
+            <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
+              Découvrez les expériences de nos membres et partenaires.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'Marie Claire N.',
+                role: 'Étudiante en Master Droit des Affaires',
+                text: 'L\'AJFIC m\'a permis de développer mes compétences en fiscalité et de rencontrer des professionnels du secteur. Les ateliers pratiques sont excellents.',
+                avatar: 'MC'
+              },
+              {
+                name: 'Jean-Paul M.',
+                role: 'Juriste d\'entreprise',
+                text: 'Grâce au réseau de l\'AJFIC, j\'ai pu accéder à des opportunités de carrière que je n\'aurais jamais eu autrement. Une communauté précieuse.',
+                avatar: 'JP'
+              },
+              {
+                name: 'Sophie E.',
+                role: 'Fiscaliste stagiaire',
+                text: 'Les formations de l\'AJFIC sont d\'une qualité exceptionnelle. J\'ai particulièrement apprécié le séminaire sur la loi de finance.',
+                avatar: 'SE'
+              },
+            ].map((testimonial, index) => (
+              <div key={index} className={`rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-[#E8705A]/20 rounded-full flex items-center justify-center">
+                    <span className="font-display font-bold text-[#E8705A]">{testimonial.avatar}</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-[#0D3B5E]">{testimonial.name}</div>
+                    <div className="text-xs text-[#9CA3AF]">{testimonial.role}</div>
+                  </div>
+                </div>
+                <p className="text-[#4B5563] leading-relaxed italic">"{testimonial.text}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* History Section */}
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Histoire</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              La flamme des Tax and Legal Days
+            </h2>
+          </div>
+
+          <div className="prose prose-lg max-w-none">
+            <p className="text-[#4B5563] leading-relaxed mb-6">
+              Tout a commencé à l'Université Catholique d'Afrique Centrale, à l'occasion de la 4ᵉ édition des Tax and Legal Days, un événement organisé par des étudiants passionnés de droit des affaires et de fiscalité.
+            </p>
+            <p className="text-[#4B5563] leading-relaxed mb-6">
+              Ce n'était censé être qu'un rendez-vous ponctuel des journées de formation, d'échanges et d'apprentissage autour de ces domaines. Mais ce qui devait rester un simple projet étudiant a fini par allumer quelque chose de plus grand. Les participants sont repartis enrichis, transformés par ce qu'ils avaient appris et partagé pendant ces journées.
+            </p>
+            <p className="text-[#4B5563] leading-relaxed mb-6">
+              Et très vite, une question s'est imposée à eux : pourquoi laisser cette flamme s'éteindre ? Ils se sont dit qu'il fallait la maintenir non seulement pour les étudiants, mais aussi pour tous ceux qui, professionnels comme étudiants, aspirent à s'enrichir dans le domaine du droit des affaires et de la fiscalité.
+            </p>
+            <p className="text-[#4B5563] leading-relaxed mb-6">
+              C'est de cette conviction qu'est née, en 2026, l'Association des Jeunes Juristes Fiscalistes du Cameroun (AJFIC), héritière directe de l'esprit de cette 4ᵉ édition des Tax and Legal Days, avec pour mission de perpétuer et d'amplifier cette dynamique de formation, de recherche et de transmission, au bénéfice de la jeunesse comme des professionnels.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision Section */}
+      <section className="bg-[#0D3B5E] py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Notre Vision</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
+            "Une jeunesse consciente du rôle qu'elle a à jouer dans le développement des droits des affaires et de la fiscalité."
+          </h2>
+          <p className="text-white/60 text-lg leading-relaxed">
+            Nous aspirons à former une génération de juristes et fiscalistes compétents, engagés et visionnaires, prêts à contribuer activement au développement économique et juridique du Cameroun et de l'Afrique centrale.
+          </p>
         </div>
       </section>
 
@@ -297,48 +640,75 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
         </div>
       </section>
 
-      {/* Partnership IUS PRIV */}
-      <section className="bg-[#F7F4EF] py-24 px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className="inline-block text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
-              Partenariat Stratégique
-            </span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E] leading-tight mb-6">
-              AJFIC × IUS PRIV :<br />
-              <em className="text-[#E8705A]">La communication juridique</em> réinventée
+      {/* Sponsor Packages Link */}
+      <section className="bg-[#E8705A] py-16 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-display text-3xl font-bold text-white mb-4">
+            Devenez partenaire de l'AJFIC
+          </h2>
+          <p className="text-white/80 text-lg mb-8">
+            Découvrez nos formules de partenariat : Silver, Gold et Diamond
+          </p>
+          <button
+            onClick={() => go('sponsoring')}
+            className="px-8 py-4 bg-white text-[#E8705A] font-bold rounded-full hover:bg-[#F7F4EF] transition-colors text-sm tracking-wide"
+          >
+            Découvrir les packages de sponsoring →
+          </button>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">FAQ</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Questions fréquentes
             </h2>
-            <p className="text-[#4B5563] leading-relaxed mb-5 text-[15px]">
-              IUS PRIV est la plateforme de communication juridique spécialisée qui accompagne l'AJFIC dans la diffusion de contenus de haute valeur analytique. Ensemble, nous produisons analyses, guides pratiques et commentaires de textes de loi accessibles à tous les praticiens.
+            <p className="text-[#6B7280] text-lg">
+              Tout ce que vous devez savoir sur l'AJFIC
             </p>
-            <p className="text-[#4B5563] leading-relaxed mb-8 text-[15px]">
-              Cette alliance stratégique renforce la visibilité des jeunes juristes et fiscalistes camerounais sur la scène nationale et régionale de la CEMAC.
-            </p>
-            <button
-              onClick={() => go('platform')}
-              className="inline-flex items-center gap-2 text-[#0D3B5E] font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
-            >
-              Accéder à la plateforme IUS PRIV →
-            </button>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-4 bg-[#E8705A]/10 rounded-3xl -rotate-2" />
-            <img
-              src={img21}
-              alt="Équipe AJFIC en réunion"
-              className="relative rounded-2xl w-full h-80 object-cover shadow-2xl"
-            />
-            <div className="absolute bottom-6 left-6 right-6 bg-[#0D3B5E]/90 backdrop-blur-sm rounded-xl p-4 text-white">
-              <div className="text-xs text-[#E8705A] font-semibold tracking-wide uppercase mb-1">IUS PRIV</div>
-              <div className="font-display text-sm font-semibold">Plateforme de communication juridique & fiscale</div>
-            </div>
+          <div className="space-y-4">
+            {[
+              {
+                question: 'Qui peut adhérer ?',
+                answer: 'L\'association est ouverte à tous les étudiants en droit, fiscalité et jeunes professionnels de moins de 35 ans.'
+              },
+              {
+                question: 'L\'inscription est-elle obligatoire ?',
+                answer: 'Oui. L\'inscription est obligatoire pour mieux organiser les activités de l\'association et vous garantir tous les avantages qu\'offre l\'association. Les modalités d\'adhésion sont détaillées sur le site.'
+              },
+              {
+                question: 'Comment devenir sponsor ou partenaire ?',
+                answer: "Nous proposons 03 formules : Silver, Gold et Diamond. Offrant différents niveaux de visibilité (Réseaux sociaux, supports imprimés, UCAC...). Contactez-nous ou consultez notre page sponsoring pour obtenir le dossier complet."
+              },
+              {
+                question: 'Où se déroulent les activités de l\'association ?',
+                answer: 'Le lieu est déterminé en fonction du type d\'activité organisée (Universités, entreprises, cabinets, descentes sur le terrain).'
+              },
+              {
+                question: 'Puis-je obtenir un certificat de participation ?',
+                answer: 'Oui ! L\'association offre le cadre de réseautage qui permet à ses membres d\'avoir un accès privilégié au marché de l\'emploi (Institutions, cabinets de conseils fiscaux, entreprises).'
+              },
+              {
+                question: 'Comment rester informé des activités de l\'association ?',
+                answer: 'Suivez-nous sur nos réseaux sociaux (LinkedIn, Facebook, TikTok...) et abonnez-vous à notre liste de diffusion en nous contactant par mail.'
+              },
+            ].map((faq, index) => (
+              <div key={index} className={`rounded-2xl p-6 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+                <h3 className="font-semibold text-[#0D3B5E] mb-3">{faq.question}</h3>
+                <p className="text-[#4B5563] leading-relaxed">{faq.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* News & Events */}
-      <section className="bg-white py-24 px-6">
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">
             <div>
@@ -386,7 +756,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
       </section>
 
       {/* Gallery Section */}
-      <section className="bg-[#F7F4EF] py-24 px-6">
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Galerie</span>
@@ -426,6 +796,46 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
         </div>
       </section>
 
+      {/* Partnership IUS PRIV - Moved to end */}
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <span className="inline-block text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+              Partenariat Stratégique
+            </span>
+            <h2 className="font-display text-4xl font-bold text-[#0D3B5E] leading-tight mb-6">
+              AJFIC × IUS PRIV :<br />
+              <em className="text-[#E8705A]">La communication juridique</em> réinventée
+            </h2>
+            <p className="text-[#4B5563] leading-relaxed mb-5 text-[15px]">
+              IUS PRIV est la plateforme de communication juridique spécialisée qui accompagne l'AJFIC dans la diffusion de contenus de haute valeur analytique. Ensemble, nous produisons analyses, guides pratiques et commentaires de textes de loi accessibles à tous les praticiens.
+            </p>
+            <p className="text-[#4B5563] leading-relaxed mb-8 text-[15px]">
+              Cette alliance stratégique renforce la visibilité des jeunes juristes et fiscalistes camerounais sur la scène nationale et régionale de la CEMAC.
+            </p>
+            <button
+              onClick={() => go('platform')}
+              className="inline-flex items-center gap-2 text-[#0D3B5E] font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
+            >
+              Accéder à la plateforme IUS PRIV →
+            </button>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-4 bg-[#E8705A]/10 rounded-3xl -rotate-2" />
+            <img
+              src={img21}
+              alt="Équipe AJFIC en réunion"
+              className="relative rounded-2xl w-full h-80 object-cover shadow-2xl"
+            />
+            <div className="absolute bottom-6 left-6 right-6 bg-[#0D3B5E]/90 backdrop-blur-sm rounded-xl p-4 text-white">
+              <div className="text-xs text-[#E8705A] font-semibold tracking-wide uppercase mb-1">IUS PRIV</div>
+              <div className="font-display text-sm font-semibold">Plateforme de communication juridique & fiscale</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Banner */}
       <section className="bg-[#E8705A] py-20 px-6">
         <div className="max-w-3xl mx-auto text-center">
@@ -450,19 +860,22 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
 // ── About Page ────────────────────────────────────────────────────────────
 
 const TEAM = [
-  { name: 'Me. Njoya Arouna', role: 'Président', bio: 'Avocat au Barreau du Cameroun, spécialiste en droit des affaires OHADA.' },
-  { name: 'Dr. Mbarga Sophie', role: 'Vice-Présidente Affaires Académiques', bio: 'Docteure en fiscalité internationale, enseignante à l\'Université de Yaoundé II. Responsable de la Commission Formation et Recherche.' },
-  { name: 'M. Tchouaffe Brice', role: 'Secrétaire Général', bio: 'Juriste d\'entreprise, expert en droit fiscal et droit social camerounais. Assure le secrétariat des réunions et la gestion administrative.' },
-  { name: 'Mme Essomba Laure', role: 'Responsable Communication', bio: 'Coordinatrice de la plateforme IUS PRIV et des relations médias. Responsable de la Commission Communication et Événements.' },
-  { name: 'M. Nkeng Patrick', role: 'Trésorier', bio: 'Expert-comptable et fiscaliste, membre de l\'Ordre National des Experts-Comptables. Gestion des finances et budget prévisionnel.' },
-  { name: 'Me. Awa Nadia', role: 'Vice-Présidente Partenariats', bio: 'Avocate stagiaire, coordinatrice des partenariats académiques régionaux. Responsable de la Commission Partenariats et Insertion.' },
+  { name: 'TCHOUANKA YOUMBI Emmanuel', role: 'Président Fondateur', bio: 'Président Fondateur de l\'AJFIC.' },
+  { name: 'Me ONANA NGA Théo-Loïc', role: 'Vice-Président Affaires Académiques', bio: 'Vice-Président chargé des affaires académiques et de la recherche.' },
+  { name: 'ESSENGUE NNENGUE RUPHINE', role: 'Vice-Présidente Partenariats', bio: 'Vice-Présidente chargée des partenariats et du réseau.' },
+  { name: 'OBATE BAYIHA Hanniel', role: 'Secrétaire Général', bio: 'Secrétaire Général de l\'AJFIC.' },
+  { name: 'NGUEUTCHOUA WENGUELALE Ivan Ralph', role: 'Secrétaire Adjoint', bio: 'Secrétaire adjoint de l\'AJFIC.' },
+  { name: 'FOUDA MARIE ANGE', role: 'Trésorière Générale', bio: 'Trésorière Générale de l\'AJFIC.' },
+  { name: 'SILLA CATHERINE La Grande', role: 'Trésorière Adjointe', bio: 'Trésorière Générale adjointe de l\'AJFIC.' },
+  { name: 'LEKABOTH MONY FERDINAND', role: 'Conseiller Technique n°1', bio: 'Conseiller Technique n°1.' },
+  { name: 'ESSONO NGA FREDERIC', role: 'Conseiller Technique n°2', bio: 'Conseiller Technique n°2.' },
 ]
 
-function AboutPage() {
+function AboutPage({ darkMode }: { darkMode: boolean }) {
   return (
     <main>
       {/* Hero */}
-      <section className="relative bg-[#0D3B5E] py-20 px-6 overflow-hidden">
+      <section className={`relative py-20 px-6 overflow-hidden ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div
           className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${img2})` }}
@@ -474,24 +887,24 @@ function AboutPage() {
             L'AJFIC en quelques mots
           </h1>
           <p className="text-white/65 text-lg leading-relaxed max-w-2xl mx-auto">
-            Fondée en 2020, l'Association des Jeunes Juristes et Fiscalistes du Cameroun est un creuset de compétence et d'engagement pour les jeunes professionnels du droit.
+            Fondée en 2026, l'Association des Jeunes Juristes et Fiscalistes du Cameroun est un creuset de compétence et d'engagement pour les jeunes professionnels du droit et de la fiscalité.
           </p>
         </div>
       </section>
 
       {/* Mission */}
-      <section className="bg-[#F7F4EF] py-24 px-6">
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
           <div>
             <h2 className="font-display text-4xl font-bold text-[#0D3B5E] mb-6">Notre Mission</h2>
             <p className="text-[#4B5563] leading-relaxed mb-5">
-              L'AJFIC a pour vocation de regrouper et de valoriser les jeunes professionnels et étudiants en droit et en fiscalité au Cameroun. Nous œuvrons pour la formation continue, le partage de savoir-faire et l'insertion professionnelle.
+              L'AJFIC fédère les jeunes juristes et les jeunes professionnelles du droit des affaires et de la fiscalité autour des enjeux juridiques et fiscaux contemporains.
             </p>
             <p className="text-[#4B5563] leading-relaxed mb-5">
-              Nous organisons régulièrement des ateliers, conférences, et publications juridiques destinés à enrichir la pratique professionnelle de nos membres tout en contribuant au développement juridique du pays.
+              Notre mission repose sur 4 piliers : la recherche, la formation, la préparation au monde professionnel, et la construction d'un réseau solide entre professionnels, entreprises et organisations internationales.
             </p>
             <p className="text-[#4B5563] leading-relaxed">
-              En partenariat avec IUS PRIV, nous développons une plateforme de communication juridique qui démocratise l'accès à l'information juridique et fiscale de qualité.
+              Nous aspirons à former une jeunesse consciente du rôle qu'elle a à jouer dans le développement des droits des affaires et de la fiscalité.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -501,7 +914,7 @@ function AboutPage() {
               { icon: '📚', title: 'Partage du Savoir', desc: 'Publications, guides pratiques et analyses accessibles à tous les membres.' },
               { icon: '🌍', title: 'Rayonnement CEMAC', desc: 'Une présence active dans l\'espace juridique de l\'Afrique centrale.' },
             ].map(v => (
-              <div key={v.title} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div key={v.title} className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <div className="text-2xl mb-3">{v.icon}</div>
                 <h3 className="font-semibold text-[#0D3B5E] mb-2 text-sm">{v.title}</h3>
                 <p className="text-xs text-[#6B7280] leading-relaxed">{v.desc}</p>
@@ -512,7 +925,7 @@ function AboutPage() {
       </section>
 
       {/* Commissions & Organisation */}
-      <section className="bg-white py-24 px-6">
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Organisation</span>
@@ -536,7 +949,7 @@ function AboutPage() {
                 icon: '📢'
               }
             ].map((commission, index) => (
-              <div key={index} className="bg-[#F7F4EF] rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 group">
+              <div key={index} className={`rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 group ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
                 <div className="text-4xl mb-4">{commission.icon}</div>
                 <h3 className="font-display font-bold text-[#0D3B5E] group-hover:text-white text-xl mb-3 transition-colors">
                   {commission.title}
@@ -551,7 +964,7 @@ function AboutPage() {
       </section>
 
       {/* Valeurs & Déontologie */}
-      <section className="bg-[#F7F4EF] py-24 px-6">
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Valeurs</span>
@@ -564,7 +977,7 @@ function AboutPage() {
               { title: 'Professionnalisme', desc: 'Excellence dans l\'exercice de nos fonctions au sein de l\'association.' },
               { title: 'Confidentialité', desc: 'Protection des informations sensibles et données personnelles.' },
             ].map((valeur, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-sm">
+              <div key={index} className={`rounded-xl p-6 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <h3 className="font-semibold text-[#0D3B5E] mb-2">{valeur.title}</h3>
                 <p className="text-xs text-[#6B7280] leading-relaxed">{valeur.desc}</p>
               </div>
@@ -574,7 +987,7 @@ function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="bg-white py-24 px-6">
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Gouvernance</span>
@@ -582,7 +995,7 @@ function AboutPage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {TEAM.map((m, i) => (
-              <div key={m.name} className="group bg-[#F7F4EF] rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300">
+              <div key={m.name} className={`group rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
                 <div className="w-14 h-14 rounded-full bg-[#E8705A]/20 flex items-center justify-center mb-5 group-hover:bg-[#E8705A]/30">
                   <span className="font-display font-bold text-[#E8705A] text-xl">
                     {m.name.split(' ').pop()![0]}
@@ -597,17 +1010,111 @@ function AboutPage() {
         </div>
       </section>
 
+      {/* Commission Académique */}
+      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Commissions</span>
+            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Commission Affaires Académiques et Recherche</h2>
+          </div>
+
+          <div className={`rounded-2xl p-8 mb-8 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
+            <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Chef de la Commission</h3>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 bg-[#E8705A]/20 rounded-full flex items-center justify-center">
+                <span className="font-display font-bold text-[#E8705A]">TL</span>
+              </div>
+              <div>
+                <div className="font-semibold text-[#0D3B5E]">Me ONANA NGA Théo-Loïc</div>
+                <div className="text-xs text-[#9CA3AF]">Vice-Président chargé des affaires académiques et de la recherche</div>
+              </div>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Direction chargée de la formation et des ateliers</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• NOUIND Manuella Sariette</li>
+                <li>• ELIANE Olivier Francheska</li>
+              </ul>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6 mt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Direction chargée des études et publications</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• BINAM Rosiane Serena</li>
+                <li>• OLAMA MINDJIMBA Audrey</li>
+              </ul>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6 mt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Chargés d'études assistant</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• N°1 : MEKA FOTIÉ Davina</li>
+                <li>• N°2 : KAMGNE WAFO Ivana</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Commission Partenariats */}
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Commission Partenariats et Réseau</h2>
+          </div>
+
+          <div className={`rounded-2xl p-8 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+            <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Chef de la Commission</h3>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 bg-[#E8705A]/20 rounded-full flex items-center justify-center">
+                <span className="font-display font-bold text-[#E8705A]">ER</span>
+              </div>
+              <div>
+                <div className="font-semibold text-[#0D3B5E]">ESSENGUE NNENGUE Ruphine Hervé</div>
+                <div className="text-xs text-[#9CA3AF]">Vice-Présidente chargée des partenariats et du réseau</div>
+              </div>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé des partenariats et de la coopération</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• Me METANG DUENANG Josemaria</li>
+              </ul>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6 mt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé de l'insertion professionnelle et du Mentorat</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• ANDOMO ANDOMO Dominique Michèle-elie</li>
+              </ul>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6 mt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé du réseau des membres anciens membres et membres d'honneur</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• Me Larissa JOGO</li>
+              </ul>
+            </div>
+
+            <div className="border-t border-[#EDE9E2] pt-6 mt-6">
+              <h4 className="font-semibold text-[#0D3B5E] mb-4">Assistant à la prospection et au suivi administratif</h4>
+              <ul className="space-y-2 text-sm text-[#4B5563]">
+                <li>• Brenda FONDJO</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Partners */}
-      <section className="bg-[#0D3B5E] py-20 px-6">
+      <section className={darkMode ? 'bg-[#0f3460] py-20 px-6' : 'bg-[#0D3B5E] py-20 px-6'}>
         <div className="max-w-7xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Partenaires</span>
           <h2 className="font-display text-3xl font-bold text-white mb-12">Nos partenaires stratégiques</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { name: 'IUS PRIV', desc: 'Communication juridique' },
-              { name: 'Barreau du Cameroun', desc: 'Partenaire institutionnel' },
-              { name: 'Université Yaoundé II', desc: 'Partenaire académique' },
-              { name: 'CEMAC Business Law', desc: 'Partenaire régional' },
+              { name: 'Université Catholique d\'Afrique Centrale', desc: 'Partenaire stratégique' },
             ].map(p => (
               <div key={p.name} className="bg-white/8 border border-white/15 rounded-2xl p-6">
                 <div className="font-display font-bold text-white mb-1">{p.name}</div>
@@ -621,7 +1128,7 @@ function AboutPage() {
   )
 }
 
-// ── Platform / IUS PRIV Page ──────────────────────────────────────────────
+// ── Platform / Publication scientifique Page ─────────────────────────────────
 
 const ARTICLES = [
   {
@@ -673,24 +1180,24 @@ const RESOURCES = [
   { title: 'Jurisprudence fiscale 2020–2025', type: 'PDF', size: '3.2 Mo', category: 'Jurisprudence' },
 ]
 
-function PlatformPage() {
+function PublicationPage({ darkMode }: { darkMode: boolean }) {
   const [activeTab, setActiveTab] = useState<'articles' | 'resources'>('articles')
   const featured = ARTICLES.find(a => a.featured)!
   const others = ARTICLES.filter(a => !a.featured)
 
   return (
     <main>
-      <section className="bg-[#0D3B5E] py-20 px-6">
+      <section className={darkMode ? 'bg-[#0f3460] py-20 px-6' : 'bg-[#0D3B5E] py-20 px-6'}>
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Plateforme</span>
-          <h1 className="font-display text-5xl font-bold text-white mb-4">IUS PRIV</h1>
+          <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Publication</span>
+          <h1 className="font-display text-5xl font-bold text-white mb-4">Publication scientifique</h1>
           <p className="text-white/60 text-lg">
             Analyses juridiques et fiscales de référence pour les praticiens du Cameroun
           </p>
         </div>
       </section>
 
-      <section className="bg-[#F7F4EF] py-6 px-6 border-b border-[#EDE9E2]">
+      <section className={darkMode ? 'bg-[#16213e] py-6 px-6 border-b border-white/10' : 'bg-[#F7F4EF] py-6 px-6 border-b border-[#EDE9E2]'}>
         <div className="max-w-7xl mx-auto flex gap-6">
           {(['articles', 'resources'] as const).map(t => (
             <button
@@ -707,10 +1214,10 @@ function PlatformPage() {
       </section>
 
       {activeTab === 'articles' && (
-        <section className="bg-[#F7F4EF] py-14 px-6">
+        <section className={darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'}>
           <div className="max-w-7xl mx-auto">
             {/* Featured article */}
-            <div className="mb-12 bg-white rounded-3xl overflow-hidden shadow-sm grid lg:grid-cols-2">
+            <div className={`mb-12 rounded-3xl overflow-hidden shadow-sm grid lg:grid-cols-2 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
               <div className="overflow-hidden h-64 lg:h-auto">
                 <img src={featured.img} alt={featured.title} className="w-full h-full object-cover" />
               </div>
@@ -734,7 +1241,7 @@ function PlatformPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {others.map(a => (
-                <article key={a.title} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer">
+                <article key={a.title} className={`rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group cursor-pointer ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                   <div className="overflow-hidden h-44">
                     <img src={a.img} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
@@ -757,14 +1264,14 @@ function PlatformPage() {
       )}
 
       {activeTab === 'resources' && (
-        <section className="bg-[#F7F4EF] py-14 px-6">
+        <section className={darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'}>
           <div className="max-w-4xl mx-auto">
             <p className="text-[#6B7280] mb-8 text-sm">
               Ressources juridiques et fiscales compilées et annotées par les membres de l'AJFIC. Accès réservé aux membres à jour de cotisation.
             </p>
             <div className="space-y-4">
               {RESOURCES.map(r => (
-                <div key={r.title} className="bg-white rounded-2xl p-6 flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow group">
+                <div key={r.title} className={`rounded-2xl p-6 flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow group ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                   <div className="flex items-center gap-5">
                     <div className="w-12 h-12 bg-[#E8705A]/10 rounded-xl flex items-center justify-center shrink-0">
                       <span className="text-[#E8705A] font-bold text-xs">{r.type}</span>
@@ -794,7 +1301,7 @@ function PlatformPage() {
 
 type UploadedFile = { name: string; size: number; progress: number }
 
-function AdhesionPage() {
+function AdhesionPage({ darkMode }: { darkMode: boolean }) {
   const [step, setStep] = useState(1)
   const [form, setForm] = useState({
     nom: '', prenom: '', dob: '', ville: '',
@@ -830,7 +1337,7 @@ function AdhesionPage() {
 
   if (submitted) {
     return (
-      <main className="min-h-screen bg-[#F7F4EF] flex items-center justify-center px-6 py-24">
+      <main className={`min-h-screen flex items-center justify-center px-6 py-24 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F7F4EF]'}`}>
         <div className="max-w-md w-full text-center">
           <div className="w-20 h-20 bg-[#0D3B5E] rounded-full flex items-center justify-center mx-auto mb-8">
             <svg className="w-10 h-10 text-[#E8705A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -856,9 +1363,9 @@ function AdhesionPage() {
   }
 
   return (
-    <main className="bg-[#F7F4EF] min-h-screen">
+    <main className={`min-h-screen ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F7F4EF]'}`}>
       {/* Hero */}
-      <section className="bg-[#0D3B5E] py-16 px-6">
+      <section className={darkMode ? 'bg-[#0f3460] py-16 px-6' : 'bg-[#0D3B5E] py-16 px-6'}>
         <div className="max-w-2xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Inscription</span>
           <h1 className="font-display text-4xl font-bold text-white mb-3">Adhérer à l'AJFIC</h1>
@@ -867,7 +1374,7 @@ function AdhesionPage() {
       </section>
 
       {/* Membership Types Info */}
-      <section className="bg-[#F7F4EF] py-12 px-6">
+      <section className={darkMode ? 'bg-[#16213e] py-12 px-6' : 'bg-[#F7F4EF] py-12 px-6'}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Types d'adhésion</h2>
@@ -900,7 +1407,7 @@ function AdhesionPage() {
                 desc: 'Partenaires et bienfaiteurs'
               }
             ].map((category, index) => (
-              <div key={index} className="bg-white rounded-xl p-5 shadow-sm">
+              <div key={index} className={`rounded-xl p-5 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <h3 className="font-semibold text-[#0D3B5E] mb-2">{category.type}</h3>
                 <div className="space-y-1 text-xs">
                   <div className="flex justify-between">
@@ -920,7 +1427,7 @@ function AdhesionPage() {
       </section>
 
       {/* Stepper */}
-      <div className="bg-white border-b border-[#EDE9E2] px-6 py-5">
+      <div className={`border-b px-6 py-5 ${darkMode ? 'bg-[#1a1a2e] border-white/10' : 'bg-white border-[#EDE9E2]'}`}>
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           {STEPS.map((s, i) => {
             const n = i + 1
@@ -948,7 +1455,7 @@ function AdhesionPage() {
       <div className="max-w-2xl mx-auto px-6 py-12">
         {/* Step 1: Personal Info */}
         {step === 1 && (
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
+          <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
             <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Informations personnelles</h2>
             <div className="grid sm:grid-cols-2 gap-5">
               {[
@@ -1003,7 +1510,7 @@ function AdhesionPage() {
 
         {/* Step 2: Professional Profile */}
         {step === 2 && (
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
+          <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
             <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Profil professionnel</h2>
             <p className="text-sm text-[#6B7280] mb-8">Sélectionnez le profil qui correspond à votre situation actuelle.</p>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -1047,7 +1554,7 @@ function AdhesionPage() {
 
         {/* Step 3: File Upload */}
         {step === 3 && (
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
+          <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
             <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Pièces justificatives</h2>
             <p className="text-sm text-[#6B7280] mb-8">Formats acceptés : PDF, JPG, PNG — Taille max : 5 Mo par fichier.</p>
 
@@ -1136,7 +1643,7 @@ function AdhesionPage() {
 
         {/* Step 4: Payment */}
         {step === 4 && (
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
+          <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
             <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Cotisation annuelle</h2>
             <p className="text-sm text-[#6B7280] mb-6">Selon votre profil, voici les montants applicables selon le règlement intérieur de l'AJFIC</p>
 
@@ -1225,15 +1732,236 @@ function AdhesionPage() {
   )
 }
 
+// ── Sponsoring Page ─────────────────────────────────────────────────────────
+
+interface Pack {
+  name: string
+  price: string
+  tagline: string
+  highlight?: boolean
+  perks: { label: string; ok: boolean }[]
+}
+
+const PACKS: Pack[] = [
+  {
+    name: 'Silver',
+    price: '100.000 – 350.000 FCFA',
+    tagline: 'Visibilité essentielle + présence sur supports clés.',
+    perks: [
+      { label: 'Logo sur affiches (campus & au-delà)', ok: true },
+      { label: 'Logo sur flyers', ok: true },
+      { label: 'Logo sur réseaux sociaux', ok: true },
+      { label: "Logo sur programme remis à l'auditoire", ok: true },
+      { label: 'Spot vidéo', ok: false },
+      { label: "Billets d'invitation", ok: false },
+      { label: 'Espace tente (foire des métiers)', ok: false },
+      { label: 'Texte de présentation sur réseaux', ok: false },
+    ],
+  },
+  {
+    name: 'Gold',
+    price: '400.000 – 750.000 FCFA',
+    tagline: 'Visibilité renforcée + activation plus premium.',
+    highlight: true,
+    perks: [
+      { label: 'Logo sur affiches (campus & au-delà)', ok: true },
+      { label: 'Logo sur flyers', ok: true },
+      { label: 'Logo sur réseaux sociaux', ok: true },
+      { label: "Logo sur programme remis à l'auditoire", ok: true },
+      { label: "Billets d'invitation", ok: true },
+      { label: 'Spot vidéo', ok: true },
+      { label: 'Texte de présentation (80 mots)', ok: true },
+      { label: 'Espace tente (foire des métiers)', ok: true },
+    ],
+  },
+  {
+    name: 'Diamond',
+    price: 'À partir de 800.000 FCFA',
+    tagline: 'Package prestige + maximum de visibilité & avantages.',
+    perks: [
+      { label: 'Logo sur affiches (campus & au-delà)', ok: true },
+      { label: 'Logo sur flyers', ok: true },
+      { label: 'Logo sur réseaux sociaux', ok: true },
+      { label: "Logo sur programme remis à l'auditoire", ok: true },
+      { label: 'Spot vidéo', ok: true },
+      { label: 'Attestations (participants olympiades)', ok: true },
+      { label: 'Texte de présentation (150 mots)', ok: true },
+      { label: "Invitations brunch de clôture (x4)", ok: true },
+    ],
+  },
+]
+
+const ADVANTAGES = [
+  {
+    icon: 'campaign',
+    title: 'Couverture publicitaire',
+    desc: 'Affiches, flyers, roll-up, réseaux sociaux et supports officiels.',
+  },
+  {
+    icon: 'verified',
+    title: 'Image valorisante',
+    desc: 'Soutien à la jeunesse et aux activités scientifiques & éducatives de l'UCAC.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Réseau & notoriété',
+    desc: 'Visibilité auprès d'un public juridique, fiscal et institutionnel.',
+  },
+]
+
+function SponsoringPage({ darkMode }: { darkMode: boolean }) {
+  return (
+    <main>
+      <section className={`relative py-20 px-6 overflow-hidden ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-15"
+          style={{ backgroundImage: `url(${img1})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#082A45]/90 via-[#0D3B5E]/70 to-[#0D3B5E]/50" />
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Partenariat</span>
+          <h1 className="font-display text-5xl font-bold text-white mb-4">Devenez partenaire de l'AJFIC</h1>
+          <p className="text-white/65 text-lg leading-relaxed max-w-2xl mx-auto">
+            Soutenez la jeunesse juridique et fiscale du Cameroun tout en bénéficiant d'une visibilité exceptionnelle auprès d'un public qualifié.
+          </p>
+        </div>
+      </section>
+
+      <section className={darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Avantages</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Pourquoi sponsoriser l'AJFIC ?
+            </h2>
+            <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
+              Un partenariat stratégique qui valorise votre image et vous connecte aux futurs leaders du droit et de la fiscalité.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {ADVANTAGES.map((advantage, index) => (
+              <div key={index} className={`rounded-2xl p-8 hover:shadow-lg transition-shadow ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
+                <div className="w-14 h-14 bg-[#E8705A]/20 rounded-xl flex items-center justify-center mb-5">
+                  <span className="text-2xl">
+                    {advantage.icon === 'campaign' ? '📢' : advantage.icon === 'verified' ? '✅' : '🤝'}
+                  </span>
+                </div>
+                <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-3">{advantage.title}</h3>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{advantage.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Packages</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+              Nos formules de sponsoring
+            </h2>
+            <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
+              Choisissez le niveau de partenariat adapté à vos objectifs et à votre budget.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {PACKS.map((pack, index) => (
+              <div
+                key={pack.name}
+                className={`relative rounded-3xl p-8 transition-all duration-300 ${
+                  pack.highlight
+                    ? 'bg-[#0D3B5E] text-white scale-105 shadow-2xl border-2 border-[#E8705A]'
+                    : darkMode
+                    ? 'bg-[#16213e] border border-white/10'
+                    : 'bg-[#F7F4EF] border border-[#EDE9E2]'
+                }`}
+              >
+                {pack.highlight && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <span className="bg-[#E8705A] text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wide uppercase">
+                      Recommandé
+                    </span>
+                  </div>
+                )}
+                <div className="text-center mb-8">
+                  <h3 className={`font-display text-3xl font-bold mb-2 ${pack.highlight ? 'text-white' : 'text-[#0D3B5E]'}`}>
+                    {pack.name}
+                  </h3>
+                  <div className={`text-2xl font-bold mb-3 ${pack.highlight ? 'text-[#E8705A]' : 'text-[#E8705A]'}`}>
+                    {pack.price}
+                  </div>
+                  <p className={`text-sm leading-relaxed ${pack.highlight ? 'text-white/70' : 'text-[#6B7280]'}`}>
+                    {pack.tagline}
+                  </p>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  {pack.perks.map((perk, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                        perk.ok ? 'bg-[#E8705A]' : 'bg-gray-300'
+                      }`}>
+                        {perk.ok ? (
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        )}
+                      </div>
+                      <span className={`text-sm ${pack.highlight ? 'text-white/80' : perk.ok ? 'text-[#374151]' : 'text-[#9CA3AF]'}`}>
+                        {perk.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-colors ${
+                    pack.highlight
+                      ? 'bg-[#E8705A] hover:bg-[#C85A45] text-white'
+                      : 'bg-[#0D3B5E] hover:bg-[#082A45] text-white'
+                  }`}
+                >
+                  Demander un devis
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={`relative py-20 px-6 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-display text-3xl font-bold text-[#0D3B5E] mb-4">
+            Besoin d'une formule personnalisée ?
+          </h2>
+          <p className="text-[#6B7280] text-lg mb-8">
+            Discutons de vos besoins spécifiques pour créer un partenariat sur mesure.
+          </p>
+          <button className="px-8 py-4 bg-[#E8705A] text-white font-bold rounded-full hover:bg-[#C85A45] transition-colors text-sm tracking-wide">
+            Contacter l'équipe partenariat
+          </button>
+        </div>
+      </section>
+    </main>
+  )
+}
+
 // ── Contact Page ──────────────────────────────────────────────────────────
 
-function ContactPage() {
+function ContactPage({ darkMode }: { darkMode: boolean }) {
   const [sent, setSent] = useState(false)
   const [cform, setCform] = useState({ nom: '', email: '', sujet: '', message: '' })
 
   return (
     <main>
-      <section className="relative bg-[#0D3B5E] py-20 px-6 overflow-hidden">
+      <section className={`relative py-20 px-6 overflow-hidden ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div
           className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${img3})` }}
@@ -1246,7 +1974,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="bg-[#F7F4EF] py-20 px-6">
+      <section className={darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'}>
         <div className="max-w-5xl mx-auto grid lg:grid-cols-5 gap-14">
           <div className="lg:col-span-2 space-y-8">
             <div>
@@ -1256,8 +1984,9 @@ function ContactPage() {
                   { icon: '📍', label: 'Siège social', value: 'Yaoundé, Cameroun' },
                   { icon: '✉️', label: 'Email général', value: 'contact@ajfic.cm' },
                   { icon: '🎓', label: 'Secrétariat Général', value: 'secretariat@ajfic.cm' },
-                  { icon: '📞', label: 'Téléphone', value: '+237 699 000 000' },
-                  { icon: '💬', label: 'WhatsApp officiel', value: '+237 677 000 000' },
+                  { icon: '📞', label: 'Téléphone', value: '+237 69750 3177/177/65009386' },
+                  { icon: '💬', label: 'WhatsApp officiel', value: '+237 69750 3177' },
+                  { icon: '🎵', label: 'TikTok', value: 'Ajowe Eiktok' },
                 ].map(c => (
                   <div key={c.label} className="flex gap-4">
                     <span className="text-xl shrink-0 mt-0.5">{c.icon}</span>
@@ -1277,6 +2006,7 @@ function ContactPage() {
                   { name: 'LinkedIn', color: '#0A66C2' },
                   { name: 'Facebook', color: '#1877F2' },
                   { name: 'WhatsApp', color: '#25D366' },
+                  { name: 'TikTok', color: '#000000' },
                 ].map(s => (
                   <a
                     key={s.name}
@@ -1288,6 +2018,7 @@ function ContactPage() {
                   </a>
                 ))}
               </div>
+              <p className="text-xs text-[#9CA3AF] mt-2">TikTok : @Ajowe Eiktok</p>
             </div>
 
             <div>
@@ -1317,7 +2048,7 @@ function ContactPage() {
 
           <div className="lg:col-span-3">
             {sent ? (
-              <div className="bg-white rounded-2xl p-10 text-center shadow-sm">
+              <div className={`rounded-2xl p-10 text-center shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <div className="text-4xl mb-4">✉️</div>
                 <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-3">Message envoyé !</h3>
                 <p className="text-[#6B7280] text-sm mb-6">Nous vous répondrons dans les plus brefs délais, conformément à nos procédures internes.</p>
@@ -1329,7 +2060,7 @@ function ContactPage() {
                 </button>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl p-8 shadow-sm">
+              <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Envoyer un message</h3>
                 <div className="grid sm:grid-cols-2 gap-5 mb-5">
                   <div>
@@ -1398,18 +2129,20 @@ function ContactPage() {
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
+  const [darkMode, setDarkMode] = useState(false)
 
   return (
-    <div className="min-h-full flex flex-col bg-[#F7F4EF]" style={{ fontFamily: "'Outfit', sans-serif" }}>
-      <NavBar page={page} setPage={setPage} />
+    <div className={`min-h-full flex flex-col ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F7F4EF]'}`} style={{ fontFamily: "'Outfit', sans-serif" }}>
+      <NavBar page={page} setPage={setPage} darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className="flex-1">
-        {page === 'home' && <HomePage setPage={setPage} />}
-        {page === 'about' && <AboutPage />}
-        {page === 'platform' && <PlatformPage />}
-        {page === 'adhesion' && <AdhesionPage />}
-        {page === 'contact' && <ContactPage />}
+        {page === 'home' && <HomePage setPage={setPage} darkMode={darkMode} />}
+        {page === 'about' && <AboutPage darkMode={darkMode} />}
+        {page === 'platform' && <PublicationPage darkMode={darkMode} />}
+        {page === 'sponsoring' && <SponsoringPage darkMode={darkMode} />}
+        {page === 'adhesion' && <AdhesionPage darkMode={darkMode} />}
+        {page === 'contact' && <ContactPage darkMode={darkMode} />}
       </div>
-      <Footer setPage={setPage} />
+      <Footer setPage={setPage} darkMode={darkMode} />
     </div>
   )
 }
