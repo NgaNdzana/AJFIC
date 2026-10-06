@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
-import ajficLogo from '@/imports/Fichier_6.png'
+import ajficLogo from '@/imports/ajfic-logo.png'
 
 // Hook pour l'effet parallax et l'apparition des éléments
 function useScrollAnimation() {
@@ -31,26 +31,26 @@ function useScrollAnimation() {
 }
 
 // Images de la galerie (uniquement les fichiers JPEG, excluant les vidéos et logos)
-import img1 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.00.jpeg'
-import img2 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.01.jpeg'
-import img3 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.02.jpeg'
-import img4 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.03.jpeg'
-import img5 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.04 (1).jpeg'
-import img6 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.04.jpeg'
-import img7 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.05 (1).jpeg'
-import img8 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.05 (2).jpeg'
-import img9 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.05.jpeg'
-import img10 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.07 (1).jpeg'
-import img11 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.07.jpeg'
-import img12 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.08 (1).jpeg'
-import img13 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.08 (2).jpeg'
-import img14 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.08.jpeg'
-import img15 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.09 (1).jpeg'
-import img16 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.09 (2).jpeg'
-import img17 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.09.jpeg'
-import img18 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.10.jpeg'
-import img19 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.14.jpeg'
-import img20 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.15.jpeg'
+import img1 from '@/assets/images/img_001.jpeg'
+import img2 from '@/assets/images/img_002.jpeg'
+import img3 from '@/assets/images/img_003.jpeg'
+import img4 from '@/assets/images/img_004.jpeg'
+import img5 from '@/assets/images/img_005.jpeg'
+import img6 from '@/assets/images/img_006.jpeg'
+import img7 from '@/assets/images/img_007.jpeg'
+import img8 from '@/assets/images/img_008.jpeg'
+import img9 from '@/assets/images/img_009.jpeg'
+import img10 from '@/assets/images/img_010.jpeg'
+import img11 from '@/assets/images/img_011.jpeg'
+import img12 from '@/assets/images/img_012.jpeg'
+import img13 from '@/assets/images/img_013.jpeg'
+import img14 from '@/assets/images/img_014.jpeg'
+import img15 from '@/assets/images/img_015.jpeg'
+import img16 from '@/assets/images/img_016.jpeg'
+import img17 from '@/assets/images/img_017.jpeg'
+import img18 from '@/assets/images/img_018.jpeg'
+import img19 from '@/assets/images/img_019.jpeg'
+import img20 from '@/assets/images/img_020.jpeg'
 import img21 from '@/assets/images/UIS.jpeg'
 
 const GALLERY_IMAGES = [
