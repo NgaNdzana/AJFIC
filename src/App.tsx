@@ -1,6 +1,35 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import ajficLogo from '@/imports/Fichier_6.png'
 
+// Hook pour l'effet parallax et l'apparition des éléments
+function useScrollAnimation() {
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [])
+
+  return [ref, isVisible] as const
+}
+
 // Images de la galerie (uniquement les fichiers JPEG, excluant les vidéos et logos)
 import img1 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.00.jpeg'
 import img2 from '@/assets/images/WhatsApp Image 2026-09-10 at 21.45.01.jpeg'
@@ -167,7 +196,7 @@ function Footer({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode: b
               </a>
             ))}
             <a href="#" className="text-xs text-[#E8705A] hover:text-[#f08878] transition-colors font-semibold tracking-wide">
-              TikTok (@Ajowe Eiktok)
+              TikTok (@AJFIC)
             </a>
           </div>
         </div>
@@ -251,11 +280,24 @@ const STATS = [
 function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode: boolean }) {
   const go = (p: Page) => { setPage(p); window.scrollTo(0, 0) }
   const [shuffledImages, setShuffledImages] = useState(() => shuffleArray(GALLERY_IMAGES))
+  const [section1Ref, section1Visible] = useScrollAnimation()
+  const [section2Ref, section2Visible] = useScrollAnimation()
+  const [section3Ref, section3Visible] = useScrollAnimation()
+  const [section4Ref, section4Visible] = useScrollAnimation()
+  const [section5Ref, section5Visible] = useScrollAnimation()
+  const [section6Ref, section6Visible] = useScrollAnimation()
+  const [section7Ref, section7Visible] = useScrollAnimation()
+  const [section8Ref, section8Visible] = useScrollAnimation()
+  const [section9Ref, section9Visible] = useScrollAnimation()
+  const [section10Ref, section10Visible] = useScrollAnimation()
+  const [section11Ref, section11Visible] = useScrollAnimation()
+  const [section12Ref, section12Visible] = useScrollAnimation()
+  const [section13Ref, section13Visible] = useScrollAnimation()
 
   return (
     <main>
       {/* Hero */}
-      <section className="relative bg-[#0D3B5E] overflow-hidden min-h-[90vh] flex items-center">
+      <section className="relative bg-[#0D3B5E] overflow-hidden min-h-[80vh] flex items-center pb-32 lg:pb-24">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${img1})` }}
@@ -268,21 +310,10 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
         <div className="absolute bottom-32 left-1/4 w-24 h-24 bg-[#E8705A]/15 rounded-full blur-2xl animate-pulse-glow" />
         <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-white/10 rounded-full blur-xl animate-float animation-delay-400" />
 
-        {/* Floating images */}
-        <div className="absolute top-32 right-16 w-20 h-20 rounded-xl overflow-hidden shadow-2xl animate-float animation-delay-200 opacity-40">
-          <img src={img2} alt="AJFIC" className="w-full h-full object-cover" />
-        </div>
-        <div className="absolute bottom-40 right-32 w-16 h-16 rounded-xl overflow-hidden shadow-2xl animate-float-delayed animation-delay-600 opacity-30">
-          <img src={img3} alt="AJFIC" className="w-full h-full object-cover" />
-        </div>
-        <div className="absolute top-1/2 left-20 w-14 h-14 rounded-xl overflow-hidden shadow-2xl animate-float animation-delay-800 opacity-25">
-          <img src={img4} alt="AJFIC" className="w-full h-full object-cover" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="animate-slide-in-left">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-slide-in-left max-w-3xl">
             <span className="inline-block text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-6 border border-[#E8705A]/40 px-3 py-1.5 rounded-full">
-              AJFIC × IUS PRIV — Depuis 2020
+              AJFIC
             </span>
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.12] mb-6">
               L'Union sacrée d'une{' '}
@@ -292,27 +323,55 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
             <p className="text-white/65 text-lg leading-relaxed mb-10 max-w-lg">
               L'AJFIC fédère les jeunes juristes et les jeunes professionnelles du droit des affaires et de la fiscalité autour des enjeux juridiques et fiscaux contemporains.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mb-16 lg:mb-0">
               <button
                 onClick={() => go('adhesion')}
-                className="px-7 py-3.5 bg-[#E8705A] hover:bg-[#C85A45] text-white font-semibold rounded-full transition-colors duration-150 text-sm"
+                className="px-7 py-3.5 bg-[#E8705A] hover:bg-[#C85A45] text-white font-semibold rounded-full transition-colors duration-150 text-sm active:scale-95"
               >
                 Rejoindre l'AJFIC
               </button>
               <button
                 onClick={() => go('about')}
-                className="px-7 py-3.5 border border-white/30 hover:border-white/60 text-white font-medium rounded-full transition-colors duration-150 text-sm"
+                className="px-7 py-3.5 border border-white/30 hover:border-white/60 text-white font-medium rounded-full transition-colors duration-150 text-sm active:scale-95"
               >
                 Découvrir notre mission →
               </button>
             </div>
           </div>
 
-          <div className="hidden lg:grid grid-cols-2 gap-4 animate-slide-in-right animation-delay-400">
+          {/* Logo oscillant en avant plan */}
+          <div className="hidden lg:flex justify-center items-center animate-slide-in-right animation-delay-400">
+            <div className="relative" style={{ animation: 'float-vertical 4s ease-in-out infinite' }}>
+              <div className="w-64 h-64 relative">
+                {/* Cercle blanc flexible autour du logo */}
+                <div className="absolute inset-0 bg-white rounded-full shadow-2xl flex items-center justify-center animate-pulse-glow">
+                  <img src={ajficLogo} alt="AJFIC Logo" className="w-48 h-48 object-contain" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Logo mobile - affiché en bas sur mobile */}
+        <div className="lg:hidden absolute bottom-8 left-1/2 -translate-x-1/2 z-20" style={{ animation: 'float-vertical 4s ease-in-out infinite' }}>
+          <div className="w-32 h-32">
+            {/* Cercle blanc flexible autour du logo mobile */}
+            <div className="absolute inset-0 bg-white rounded-full shadow-xl flex items-center justify-center animate-pulse-glow">
+              <img src={ajficLogo} alt="AJFIC Logo" className="w-24 h-24 object-contain" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section with Logo */}
+      <section ref={section13Ref} className={`parallax-section bg-[#0A2E4A] py-16 px-6 relative overflow-hidden ${section13Visible ? 'visible' : ''}`}>
+        <div className="max-w-7xl mx-auto relative">
+
+          <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-6">
             {STATS.map(s => (
-              <div key={s.label} className="bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <div className="font-display text-4xl font-bold text-[#E8705A] mb-1">{s.value}</div>
-                <div className="text-white/60 text-sm">{s.label}</div>
+              <div key={s.label} className="text-center backdrop-blur-sm bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="font-display text-3xl md:text-4xl font-bold text-[#E8705A] mb-2">{s.value}</div>
+                <div className="text-white/70 text-sm">{s.label}</div>
               </div>
             ))}
           </div>
@@ -320,10 +379,10 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Why Join Section */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-20 px-6' : 'bg-white py-20 px-6'}>
+      <section ref={section1Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-20 px-6' : 'bg-white py-20 px-6'} ${section1Visible ? 'visible' : ''}`}>
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Pourquoi nous rejoindre ?</span>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+          <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
             Pourquoi adhérer à l'AJFIC ?
           </h2>
           <p className="text-[#6B7280] text-lg leading-relaxed mb-10">
@@ -337,7 +396,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
             ].map((benefit, index) => (
               <div key={index} className={`rounded-2xl p-6 hover:shadow-lg transition-shadow ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
                 <div className="text-3xl mb-4">{benefit.icon}</div>
-                <h3 className="font-semibold text-[#0D3B5E] mb-2">{benefit.title}</h3>
+                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{benefit.title}</h3>
                 <p className="text-sm text-[#6B7280] leading-relaxed">{benefit.desc}</p>
               </div>
             ))}
@@ -346,11 +405,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Mission Section - 4 Pillars */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section2Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section2Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Notre Mission</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Notre mission repose sur 4 piliers
             </h2>
             <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
@@ -396,11 +455,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
                     <div className="text-3xl mt-2">{pillar.icon}</div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-3">{pillar.title}</h3>
+                    <h3 className={`font-display text-2xl font-bold mb-3 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{pillar.title}</h3>
                     <p className="text-[#6B7280] leading-relaxed mb-4">{pillar.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {pillar.details.map((detail, i) => (
-                        <span key={i} className="text-xs bg-[#EBF2F8] text-[#0D3B5E] px-3 py-1 rounded-full font-medium">
+                        <span key={i} className={`text-xs px-3 py-1 rounded-full font-medium ${darkMode ? 'bg-[#1a1a2e] text-[#5DADE2]' : 'bg-[#EBF2F8] text-[#0D3B5E]'}`}>
                           {detail}
                         </span>
                       ))}
@@ -414,11 +473,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Intervention Domains */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section3Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section3Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Domaines d'intervention</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Nos domaines d'intervention
             </h2>
             <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
@@ -432,7 +491,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
                 <div className="w-12 h-12 bg-[#E8705A]/20 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">⚖️</span>
                 </div>
-                <h3 className="font-display text-2xl font-bold text-[#0D3B5E]">Droit des affaires</h3>
+                <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Droit des affaires</h3>
               </div>
               <ul className="space-y-3">
                 {[
@@ -455,7 +514,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
                 <div className="w-12 h-12 bg-[#E8705A]/20 rounded-xl flex items-center justify-center">
                   <span className="text-2xl">📊</span>
                 </div>
-                <h3 className="font-display text-2xl font-bold text-[#0D3B5E]">Fiscalité</h3>
+                <h3 className={`font-display text-2xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Fiscalité</h3>
               </div>
               <ul className="space-y-3">
                 {[
@@ -477,7 +536,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Upcoming Events */}
-      <section className="bg-[#0D3B5E] py-24 px-6">
+      <section ref={section4Ref} className={`parallax-section bg-[#0D3B5E] py-24 px-6 ${section4Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Événements</span>
@@ -538,11 +597,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Testimonials Section */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section5Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section5Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Témoignages</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Ce que disent nos membres
             </h2>
             <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
@@ -577,7 +636,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
                     <span className="font-display font-bold text-[#E8705A]">{testimonial.avatar}</span>
                   </div>
                   <div>
-                    <div className="font-semibold text-[#0D3B5E]">{testimonial.name}</div>
+                    <div className={`font-semibold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{testimonial.name}</div>
                     <div className="text-xs text-[#9CA3AF]">{testimonial.role}</div>
                   </div>
                 </div>
@@ -589,11 +648,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* History Section */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section6Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section6Visible ? 'visible' : ''}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Histoire</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               La flamme des Tax and Legal Days
             </h2>
           </div>
@@ -616,7 +675,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Vision Section */}
-      <section className="bg-[#0D3B5E] py-24 px-6">
+      <section ref={section7Ref} className={`parallax-section bg-[#0D3B5E] py-24 px-6 ${section7Visible ? 'visible' : ''}`}>
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Notre Vision</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
@@ -625,18 +684,6 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
           <p className="text-white/60 text-lg leading-relaxed">
             Nous aspirons à former une génération de juristes et fiscalistes compétents, engagés et visionnaires, prêts à contribuer activement au développement économique et juridique du Cameroun et de l'Afrique centrale.
           </p>
-        </div>
-      </section>
-
-      {/* Stats mobile */}
-      <section className="lg:hidden bg-[#0A2E4A] py-8 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {STATS.map(s => (
-            <div key={s.label} className="text-center">
-              <div className="font-display text-3xl font-bold text-[#E8705A]">{s.value}</div>
-              <div className="text-white/50 text-xs mt-1">{s.label}</div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -659,11 +706,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* FAQ Section */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section8Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section8Visible ? 'visible' : ''}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">FAQ</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Questions fréquentes
             </h2>
             <p className="text-[#6B7280] text-lg">
@@ -699,7 +746,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
               },
             ].map((faq, index) => (
               <div key={index} className={`rounded-2xl p-6 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
-                <h3 className="font-semibold text-[#0D3B5E] mb-3">{faq.question}</h3>
+                <h3 className={`font-semibold mb-3 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{faq.question}</h3>
                 <p className="text-[#4B5563] leading-relaxed">{faq.answer}</p>
               </div>
             ))}
@@ -708,16 +755,16 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* News & Events */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section9Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section9Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-12">
             <div>
               <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Actualités</span>
-              <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Dernières nouvelles</h2>
+              <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Dernières nouvelles</h2>
             </div>
             <button
               onClick={() => go('platform')}
-              className="hidden sm:block text-sm text-[#0D3B5E] font-semibold border-b border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
+              className={`hidden sm:block text-sm font-semibold border-b border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}
             >
               Voir tout →
             </button>
@@ -744,7 +791,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
                     </span>
                     <span className="text-xs text-[#9CA3AF]">{n.date}</span>
                   </div>
-                  <h3 className="font-display font-bold text-[#0D3B5E] text-lg leading-snug mb-3 group-hover:text-[#E8705A] transition-colors">
+                  <h3 className={`font-display font-bold text-lg leading-snug mb-3 group-hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
                     {n.title}
                   </h3>
                   <p className="text-sm text-[#6B7280] leading-relaxed">{n.excerpt}</p>
@@ -756,11 +803,11 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Gallery Section */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section10Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section10Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Galerie</span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Moments AJFIC</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Moments AJFIC</h2>
             <p className="text-[#6B7280] mt-4 max-w-2xl mx-auto">
               Découvrez nos événements, formations et moments forts à travers notre galerie photo.
             </p>
@@ -788,7 +835,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
           <div className="text-center mt-12">
             <button
               onClick={() => setShuffledImages(shuffleArray(GALLERY_IMAGES))}
-              className="inline-flex items-center gap-2 text-[#0D3B5E] font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
+              className={`inline-flex items-center gap-2 font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}
             >
               <span>🔄</span> Rafraîchir la galerie
             </button>
@@ -797,13 +844,13 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Partnership IUS PRIV - Moved to end */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section11Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section11Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <span className="inline-block text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
               Partenariat Stratégique
             </span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E] leading-tight mb-6">
+            <h2 className={`font-display text-4xl font-bold leading-tight mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               AJFIC × IUS PRIV :<br />
               <em className="text-[#E8705A]">La communication juridique</em> réinventée
             </h2>
@@ -815,7 +862,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
             </p>
             <button
               onClick={() => go('platform')}
-              className="inline-flex items-center gap-2 text-[#0D3B5E] font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
+              className={`inline-flex items-center gap-2 font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}
             >
               Accéder à la plateforme IUS PRIV →
             </button>
@@ -837,7 +884,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* CTA Banner */}
-      <section className="bg-[#E8705A] py-20 px-6">
+      <section ref={section12Ref} className={`parallax-section bg-[#E8705A] py-20 px-6 ${section12Visible ? 'visible' : ''}`}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-5">
             Prêt à rejoindre le mouvement ?
@@ -872,6 +919,15 @@ const TEAM = [
 ]
 
 function AboutPage({ darkMode }: { darkMode: boolean }) {
+  const [section1Ref, section1Visible] = useScrollAnimation()
+  const [section2Ref, section2Visible] = useScrollAnimation()
+  const [section3Ref, section3Visible] = useScrollAnimation()
+  const [section4Ref, section4Visible] = useScrollAnimation()
+  const [section5Ref, section5Visible] = useScrollAnimation()
+  const [section6Ref, section6Visible] = useScrollAnimation()
+  const [section7Ref, section7Visible] = useScrollAnimation()
+  const [section8Ref, section8Visible] = useScrollAnimation()
+
   return (
     <main>
       {/* Hero */}
@@ -893,10 +949,10 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Mission */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section1Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section1Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E] mb-6">Notre Mission</h2>
+            <h2 className={`font-display text-4xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Notre Mission</h2>
             <p className="text-[#4B5563] leading-relaxed mb-5">
               L'AJFIC fédère les jeunes juristes et les jeunes professionnelles du droit des affaires et de la fiscalité autour des enjeux juridiques et fiscaux contemporains.
             </p>
@@ -916,7 +972,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
             ].map(v => (
               <div key={v.title} className={`rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <div className="text-2xl mb-3">{v.icon}</div>
-                <h3 className="font-semibold text-[#0D3B5E] mb-2 text-sm">{v.title}</h3>
+                <h3 className={`font-semibold mb-2 text-sm ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{v.title}</h3>
                 <p className="text-xs text-[#6B7280] leading-relaxed">{v.desc}</p>
               </div>
             ))}
@@ -925,11 +981,11 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Commissions & Organisation */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section2Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section2Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Organisation</span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Nos Commissions Permanentes</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Nos Commissions Permanentes</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -951,7 +1007,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
             ].map((commission, index) => (
               <div key={index} className={`rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 group ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
                 <div className="text-4xl mb-4">{commission.icon}</div>
-                <h3 className="font-display font-bold text-[#0D3B5E] group-hover:text-white text-xl mb-3 transition-colors">
+                <h3 className={`font-display font-bold text-xl mb-3 transition-colors ${darkMode ? 'text-[#5DADE2] group-hover:text-white' : 'text-[#0D3B5E] group-hover:text-white'}`}>
                   {commission.title}
                 </h3>
                 <p className="text-sm text-[#6B7280] group-hover:text-white/70 leading-relaxed transition-colors">
@@ -964,11 +1020,11 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Valeurs & Déontologie */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section3Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section3Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Valeurs</span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Notre Déontologie</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Notre Déontologie</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -978,7 +1034,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
               { title: 'Confidentialité', desc: 'Protection des informations sensibles et données personnelles.' },
             ].map((valeur, index) => (
               <div key={index} className={`rounded-xl p-6 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-                <h3 className="font-semibold text-[#0D3B5E] mb-2">{valeur.title}</h3>
+                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{valeur.title}</h3>
                 <p className="text-xs text-[#6B7280] leading-relaxed">{valeur.desc}</p>
               </div>
             ))}
@@ -987,11 +1043,11 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Team */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section4Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section4Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Gouvernance</span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Bureau Exécutif</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Bureau Exécutif</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {TEAM.map((m, i) => (
@@ -1002,7 +1058,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
                   </span>
                 </div>
                 <div className="text-[10px] font-semibold tracking-widest uppercase text-[#E8705A] mb-2">{m.role}</div>
-                <h3 className="font-display font-bold text-[#0D3B5E] group-hover:text-white text-lg mb-3 transition-colors">{m.name}</h3>
+                <h3 className={`font-display font-bold text-lg mb-3 transition-colors ${darkMode ? 'text-[#5DADE2] group-hover:text-white' : 'text-[#0D3B5E] group-hover:text-white'}`}>{m.name}</h3>
                 <p className="text-xs text-[#6B7280] group-hover:text-white/60 leading-relaxed transition-colors">{m.bio}</p>
               </div>
             ))}
@@ -1011,27 +1067,27 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Commission Académique */}
-      <section className={darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'}>
+      <section ref={section5Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-24 px-6' : 'bg-[#F7F4EF] py-24 px-6'} ${section5Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Commissions</span>
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Commission Affaires Académiques et Recherche</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Commission Affaires Académiques et Recherche</h2>
           </div>
 
           <div className={`rounded-2xl p-8 mb-8 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-            <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Chef de la Commission</h3>
+            <h3 className={`font-display text-2xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Chef de la Commission</h3>
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-[#E8705A]/20 rounded-full flex items-center justify-center">
                 <span className="font-display font-bold text-[#E8705A]">TL</span>
               </div>
               <div>
-                <div className="font-semibold text-[#0D3B5E]">Me ONANA NGA Théo-Loïc</div>
+                <div className={`font-semibold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Me ONANA NGA Théo-Loïc</div>
                 <div className="text-xs text-[#9CA3AF]">Vice-Président chargé des affaires académiques et de la recherche</div>
               </div>
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Direction chargée de la formation et des ateliers</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Direction chargée de la formation et des ateliers</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• NOUIND Manuella Sariette</li>
                 <li>• ELIANE Olivier Francheska</li>
@@ -1039,7 +1095,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6 mt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Direction chargée des études et publications</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Direction chargée des études et publications</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• BINAM Rosiane Serena</li>
                 <li>• OLAMA MINDJIMBA Audrey</li>
@@ -1047,7 +1103,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6 mt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Chargés d'études assistant</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Chargés d'études assistant</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• N°1 : MEKA FOTIÉ Davina</li>
                 <li>• N°2 : KAMGNE WAFO Ivana</li>
@@ -1058,47 +1114,47 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Commission Partenariats */}
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section6Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section6Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="font-display text-4xl font-bold text-[#0D3B5E]">Commission Partenariats et Réseau</h2>
+            <h2 className={`font-display text-4xl font-bold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Commission Partenariats et Réseau</h2>
           </div>
 
           <div className={`rounded-2xl p-8 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
-            <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Chef de la Commission</h3>
+            <h3 className={`font-display text-2xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Chef de la Commission</h3>
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-12 bg-[#E8705A]/20 rounded-full flex items-center justify-center">
                 <span className="font-display font-bold text-[#E8705A]">ER</span>
               </div>
               <div>
-                <div className="font-semibold text-[#0D3B5E]">ESSENGUE NNENGUE Ruphine Hervé</div>
+                <div className={`font-semibold ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>ESSENGUE NNENGUE Ruphine Hervé</div>
                 <div className="text-xs text-[#9CA3AF]">Vice-Présidente chargée des partenariats et du réseau</div>
               </div>
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé des partenariats et de la coopération</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Directeur chargé des partenariats et de la coopération</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• Me METANG DUENANG Josemaria</li>
               </ul>
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6 mt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé de l'insertion professionnelle et du Mentorat</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Directeur chargé de l'insertion professionnelle et du Mentorat</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• ANDOMO ANDOMO Dominique Michèle-elie</li>
               </ul>
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6 mt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Directeur chargé du réseau des membres anciens membres et membres d'honneur</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Directeur chargé du réseau des membres anciens membres et membres d'honneur</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• Me Larissa JOGO</li>
               </ul>
             </div>
 
             <div className="border-t border-[#EDE9E2] pt-6 mt-6">
-              <h4 className="font-semibold text-[#0D3B5E] mb-4">Assistant à la prospection et au suivi administratif</h4>
+              <h4 className={`font-semibold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Assistant à la prospection et au suivi administratif</h4>
               <ul className="space-y-2 text-sm text-[#4B5563]">
                 <li>• Brenda FONDJO</li>
               </ul>
@@ -1108,7 +1164,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {/* Partners */}
-      <section className={darkMode ? 'bg-[#0f3460] py-20 px-6' : 'bg-[#0D3B5E] py-20 px-6'}>
+      <section ref={section7Ref} className={`parallax-section ${darkMode ? 'bg-[#0f3460] py-20 px-6' : 'bg-[#0D3B5E] py-20 px-6'} ${section7Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-3 block">Partenaires</span>
           <h2 className="font-display text-3xl font-bold text-white mb-12">Nos partenaires stratégiques</h2>
@@ -1184,6 +1240,8 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
   const [activeTab, setActiveTab] = useState<'articles' | 'resources'>('articles')
   const featured = ARTICLES.find(a => a.featured)!
   const others = ARTICLES.filter(a => !a.featured)
+  const [section1Ref, section1Visible] = useScrollAnimation()
+  const [section2Ref, section2Visible] = useScrollAnimation()
 
   return (
     <main>
@@ -1204,7 +1262,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
               key={t}
               onClick={() => setActiveTab(t)}
               className={`pb-4 text-sm font-semibold border-b-2 transition-colors ${
-                activeTab === t ? 'border-[#E8705A] text-[#0D3B5E]' : 'border-transparent text-[#9CA3AF] hover:text-[#0D3B5E]'
+                activeTab === t ? 'border-[#E8705A] text-[#0D3B5E]' : `border-transparent text-[#9CA3AF] hover:${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`
               }`}
             >
               {t === 'articles' ? 'Analyses & Articles' : 'Ressources & Téléchargements'}
@@ -1214,7 +1272,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
       </section>
 
       {activeTab === 'articles' && (
-        <section className={darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'}>
+        <section ref={section1Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'} ${section1Visible ? 'visible' : ''}`}>
           <div className="max-w-7xl mx-auto">
             {/* Featured article */}
             <div className={`mb-12 rounded-3xl overflow-hidden shadow-sm grid lg:grid-cols-2 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
@@ -1228,7 +1286,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
                   </span>
                   <span className="text-xs text-[#9CA3AF]">Article à la une</span>
                 </div>
-                <h2 className="font-display text-3xl font-bold text-[#0D3B5E] leading-tight mb-4">
+                <h2 className={`font-display text-3xl font-bold leading-tight mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
                   {featured.title}
                 </h2>
                 <p className="text-[#6B7280] text-sm leading-relaxed mb-6">{featured.excerpt}</p>
@@ -1250,7 +1308,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
                       <span className="text-[10px] font-bold tracking-wide uppercase text-[#E8705A]">{a.category}</span>
                       <span className="text-[10px] text-[#9CA3AF]">{a.readTime}</span>
                     </div>
-                    <h3 className="font-display font-bold text-[#0D3B5E] text-base leading-snug mb-2 group-hover:text-[#E8705A] transition-colors">
+                    <h3 className={`font-display font-bold text-base leading-snug mb-2 group-hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
                       {a.title}
                     </h3>
                     <p className="text-xs text-[#6B7280] leading-relaxed mb-4">{a.excerpt}</p>
@@ -1264,7 +1322,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
       )}
 
       {activeTab === 'resources' && (
-        <section className={darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'}>
+        <section ref={section2Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-14 px-6' : 'bg-[#F7F4EF] py-14 px-6'} ${section2Visible ? 'visible' : ''}`}>
           <div className="max-w-4xl mx-auto">
             <p className="text-[#6B7280] mb-8 text-sm">
               Ressources juridiques et fiscales compilées et annotées par les membres de l'AJFIC. Accès réservé aux membres à jour de cotisation.
@@ -1277,14 +1335,14 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
                       <span className="text-[#E8705A] font-bold text-xs">{r.type}</span>
                     </div>
                     <div>
-                      <div className="font-semibold text-[#0D3B5E] mb-1 text-sm group-hover:text-[#E8705A] transition-colors">{r.title}</div>
+                      <div className={`font-semibold mb-1 text-sm group-hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{r.title}</div>
                       <div className="flex items-center gap-3 text-xs text-[#9CA3AF]">
-                        <span className="bg-[#EBF2F8] text-[#0D3B5E] px-2 py-0.5 rounded-full font-medium">{r.category}</span>
+                        <span className={`px-2 py-0.5 rounded-full font-medium ${darkMode ? 'bg-[#1a1a2e] text-[#5DADE2]' : 'bg-[#EBF2F8] text-[#0D3B5E]'}`}>{r.category}</span>
                         <span>{r.size}</span>
                       </div>
                     </div>
                   </div>
-                  <button className="px-4 py-2 text-xs font-semibold text-[#0D3B5E] border border-[#0D3B5E]/20 rounded-full hover:bg-[#0D3B5E] hover:text-white hover:border-[#0D3B5E] transition-colors">
+                  <button className={`px-4 py-2 text-xs font-semibold border rounded-full transition-colors ${darkMode ? 'text-[#5DADE2] border-[#5DADE2]/20 hover:bg-[#5DADE2] hover:text-white hover:border-[#5DADE2]' : 'text-[#0D3B5E] border-[#0D3B5E]/20 hover:bg-[#0D3B5E] hover:text-white hover:border-[#0D3B5E]'}`}>
                     Télécharger
                   </button>
                 </div>
@@ -1344,9 +1402,9 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="font-display text-4xl font-bold text-[#0D3B5E] mb-4">Demande reçue !</h2>
+          <h2 className={`font-display text-4xl font-bold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Demande reçue !</h2>
           <p className="text-[#6B7280] leading-relaxed mb-3">
-            Votre dossier d'adhésion a été soumis avec succès. Un email de confirmation a été envoyé à <strong className="text-[#0D3B5E]">{form.email}</strong>.
+            Votre dossier d'adhésion a été soumis avec succès. Un email de confirmation a été envoyé à <strong className={darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}>{form.email}</strong>.
           </p>
           <p className="text-sm text-[#9CA3AF] mb-8">
             L'équipe administrative de l'AJFIC examinera votre dossier sous quinze (15) jours ouvrables conformément au règlement intérieur.
@@ -1377,7 +1435,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
       <section className={darkMode ? 'bg-[#16213e] py-12 px-6' : 'bg-[#F7F4EF] py-12 px-6'}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Types d'adhésion</h2>
+            <h2 className={`font-display text-2xl font-bold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Types d'adhésion</h2>
             <p className="text-sm text-[#6B7280]">Choisissez la catégorie qui correspond à votre situation</p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
@@ -1408,7 +1466,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
               }
             ].map((category, index) => (
               <div key={index} className={`rounded-xl p-5 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-                <h3 className="font-semibold text-[#0D3B5E] mb-2">{category.type}</h3>
+                <h3 className={`font-semibold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{category.type}</h3>
                 <div className="space-y-1 text-xs">
                   <div className="flex justify-between">
                     <span className="text-[#6B7280]">Droits d'adhésion:</span>
@@ -1440,7 +1498,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
                 }`}>
                   {done ? '✓' : n}
                 </div>
-                <span className={`hidden sm:block text-xs font-medium ${active ? 'text-[#0D3B5E]' : done ? 'text-[#E8705A]' : 'text-[#9CA3AF]'}`}>
+                <span className={`hidden sm:block text-xs font-medium ${active ? (darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]') : done ? 'text-[#E8705A]' : 'text-[#9CA3AF]'}`}>
                   {s}
                 </span>
                 {i < STEPS.length - 1 && (
@@ -1456,7 +1514,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
         {/* Step 1: Personal Info */}
         {step === 1 && (
           <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-            <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-6">Informations personnelles</h2>
+            <h2 className={`font-display text-2xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Informations personnelles</h2>
             <div className="grid sm:grid-cols-2 gap-5">
               {[
                 { key: 'nom', label: 'Nom *', type: 'text', placeholder: 'Votre nom de famille' },
@@ -1511,7 +1569,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
         {/* Step 2: Professional Profile */}
         {step === 2 && (
           <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-            <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Profil professionnel</h2>
+            <h2 className={`font-display text-2xl font-bold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Profil professionnel</h2>
             <p className="text-sm text-[#6B7280] mb-8">Sélectionnez le profil qui correspond à votre situation actuelle.</p>
             <div className="grid sm:grid-cols-2 gap-4">
               {[
@@ -1532,7 +1590,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
                   }`}
                 >
                   <div className="text-2xl mb-2">{p.icon}</div>
-                  <div className={`font-semibold text-sm mb-1 ${form.profil === p.id ? 'text-[#0D3B5E]' : 'text-[#111827]'}`}>{p.label}</div>
+                  <div className={`font-semibold text-sm mb-1 ${form.profil === p.id ? (darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]') : 'text-[#111827]'}`}>{p.label}</div>
                   <div className="text-xs text-[#9CA3AF]">{p.desc}</div>
                 </button>
               ))}
@@ -1555,7 +1613,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
         {/* Step 3: File Upload */}
         {step === 3 && (
           <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-            <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Pièces justificatives</h2>
+            <h2 className={`font-display text-2xl font-bold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Pièces justificatives</h2>
             <p className="text-sm text-[#6B7280] mb-8">Formats acceptés : PDF, JPG, PNG — Taille max : 5 Mo par fichier.</p>
 
             <div className="space-y-5">
@@ -1599,7 +1657,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
                         <div className="text-left">
                           <div className="flex items-center justify-between mb-3">
                             <div>
-                              <div className="text-sm font-medium text-[#0D3B5E]">{f.name}</div>
+                              <div className={`text-sm font-medium ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{f.name}</div>
                               <div className="text-xs text-[#9CA3AF]">{(f.size / 1024).toFixed(0)} Ko</div>
                             </div>
                             <button
@@ -1644,11 +1702,11 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
         {/* Step 4: Payment */}
         {step === 4 && (
           <div className={`rounded-2xl p-8 shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
-            <h2 className="font-display text-2xl font-bold text-[#0D3B5E] mb-2">Cotisation annuelle</h2>
+            <h2 className={`font-display text-2xl font-bold mb-2 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Cotisation annuelle</h2>
             <p className="text-sm text-[#6B7280] mb-6">Selon votre profil, voici les montants applicables selon le règlement intérieur de l'AJFIC</p>
 
             <div className="bg-[#EBF2F8] rounded-xl p-5 mb-6">
-              <div className="text-xs font-semibold text-[#0D3B5E] tracking-wide uppercase mb-3">Récapitulatif</div>
+              <div className={`text-xs font-semibold tracking-wide uppercase mb-3 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Récapitulatif</div>
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-[#6B7280]">Membre</span>
                 <span className="font-medium text-[#111827]">{form.prenom} {form.nom}</span>
@@ -1670,7 +1728,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
                 </span>
               </div>
               <div className="flex justify-between text-sm font-bold border-t border-[#0D3B5E]/10 pt-2 mt-2">
-                <span className="text-[#0D3B5E]">Total à payer (1er trimestre)</span>
+                <span className={darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}>Total à payer (1er trimestre)</span>
                 <span className="text-[#E8705A]">
                   {form.profil === 'etudiant' ? '7 000 FCFA' : '15 000 FCFA'}
                 </span>
@@ -1800,16 +1858,20 @@ const ADVANTAGES = [
   {
     icon: 'verified',
     title: 'Image valorisante',
-    desc: 'Soutien à la jeunesse et aux activités scientifiques & éducatives de l'UCAC.',
+    desc: "Soutien à la jeunesse et aux activités scientifiques & éducatives de l'UCAC.",
   },
   {
     icon: 'handshake',
     title: 'Réseau & notoriété',
-    desc: 'Visibilité auprès d'un public juridique, fiscal et institutionnel.',
+    desc: "Visibilité auprès d'un public juridique, fiscal et institutionnel.",
   },
 ]
 
 function SponsoringPage({ darkMode }: { darkMode: boolean }) {
+  const [section1Ref, section1Visible] = useScrollAnimation()
+  const [section2Ref, section2Visible] = useScrollAnimation()
+  const [section3Ref, section3Visible] = useScrollAnimation()
+
   return (
     <main>
       <section className={`relative py-20 px-6 overflow-hidden ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
@@ -1827,11 +1889,11 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
         </div>
       </section>
 
-      <section className={darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'}>
+      <section ref={section1Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'} ${section1Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Avantages</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Pourquoi sponsoriser l'AJFIC ?
             </h2>
             <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
@@ -1847,7 +1909,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
                     {advantage.icon === 'campaign' ? '📢' : advantage.icon === 'verified' ? '✅' : '🤝'}
                   </span>
                 </div>
-                <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-3">{advantage.title}</h3>
+                <h3 className={`font-display text-xl font-bold mb-3 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>{advantage.title}</h3>
                 <p className="text-sm text-[#6B7280] leading-relaxed">{advantage.desc}</p>
               </div>
             ))}
@@ -1855,11 +1917,11 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
         </div>
       </section>
 
-      <section className={darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'}>
+      <section ref={section2Ref} className={`parallax-section ${darkMode ? 'bg-[#1a1a2e] py-24 px-6' : 'bg-white py-24 px-6'} ${section2Visible ? 'visible' : ''}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Packages</span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#0D3B5E] mb-6">
+            <h2 className={`font-display text-4xl md:text-5xl font-bold mb-6 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
               Nos formules de sponsoring
             </h2>
             <p className="text-[#6B7280] text-lg max-w-3xl mx-auto">
@@ -1871,9 +1933,9 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
             {PACKS.map((pack, index) => (
               <div
                 key={pack.name}
-                className={`relative rounded-3xl p-8 transition-all duration-300 ${
+                className={`relative rounded-3xl p-8 transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 ${
                   pack.highlight
-                    ? 'bg-[#0D3B5E] text-white scale-105 shadow-2xl border-2 border-[#E8705A]'
+                    ? 'bg-[#0D3B5E] text-white shadow-2xl border-2 border-[#E8705A] scale-105'
                     : darkMode
                     ? 'bg-[#16213e] border border-white/10'
                     : 'bg-[#F7F4EF] border border-[#EDE9E2]'
@@ -1887,7 +1949,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
                   </div>
                 )}
                 <div className="text-center mb-8">
-                  <h3 className={`font-display text-3xl font-bold mb-2 ${pack.highlight ? 'text-white' : 'text-[#0D3B5E]'}`}>
+                  <h3 className={`font-display text-3xl font-bold mb-2 ${pack.highlight ? 'text-white' : (darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]')}`}>
                     {pack.name}
                   </h3>
                   <div className={`text-2xl font-bold mb-3 ${pack.highlight ? 'text-[#E8705A]' : 'text-[#E8705A]'}`}>
@@ -1922,7 +1984,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
                 </div>
 
                 <button
-                  className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-colors ${
+                  className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-95 ${
                     pack.highlight
                       ? 'bg-[#E8705A] hover:bg-[#C85A45] text-white'
                       : 'bg-[#0D3B5E] hover:bg-[#082A45] text-white'
@@ -1936,17 +1998,36 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
         </div>
       </section>
 
-      <section className={`relative py-20 px-6 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+      <section ref={section3Ref} className={`parallax-section relative py-20 px-6 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'} ${section3Visible ? 'visible' : ''}`}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-display text-3xl font-bold text-[#0D3B5E] mb-4">
+          <h2 className={`font-display text-3xl font-bold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>
             Besoin d'une formule personnalisée ?
           </h2>
           <p className="text-[#6B7280] text-lg mb-8">
             Discutons de vos besoins spécifiques pour créer un partenariat sur mesure.
           </p>
-          <button className="px-8 py-4 bg-[#E8705A] text-white font-bold rounded-full hover:bg-[#C85A45] transition-colors text-sm tracking-wide">
-            Contacter l'équipe partenariat
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://wa.me/237697503177"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#25D366] text-white font-bold rounded-full hover:bg-[#128C7E] transition-colors text-sm tracking-wide active:scale-95"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              Contacter via WhatsApp
+            </a>
+            <a
+              href="mailto:contact@ajfic.cm?subject=Demande de partenariat personnalisé"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8705A] text-white font-bold rounded-full hover:bg-[#C85A45] transition-colors text-sm tracking-wide active:scale-95"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contacter par Email
+            </a>
+          </div>
         </div>
       </section>
     </main>
@@ -1958,6 +2039,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
 function ContactPage({ darkMode }: { darkMode: boolean }) {
   const [sent, setSent] = useState(false)
   const [cform, setCform] = useState({ nom: '', email: '', sujet: '', message: '' })
+  const [section1Ref, section1Visible] = useScrollAnimation()
 
   return (
     <main>
@@ -1974,11 +2056,11 @@ function ContactPage({ darkMode }: { darkMode: boolean }) {
         </div>
       </section>
 
-      <section className={darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'}>
+      <section ref={section1Ref} className={`parallax-section ${darkMode ? 'bg-[#16213e] py-20 px-6' : 'bg-[#F7F4EF] py-20 px-6'} ${section1Visible ? 'visible' : ''}`}>
         <div className="max-w-5xl mx-auto grid lg:grid-cols-5 gap-14">
           <div className="lg:col-span-2 space-y-8">
             <div>
-              <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-5">Coordonnées</h3>
+              <h3 className={`font-display text-xl font-bold mb-5 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Coordonnées</h3>
               <div className="space-y-5">
                 {[
                   { icon: '📍', label: 'Siège social', value: 'Yaoundé, Cameroun' },
@@ -2000,7 +2082,7 @@ function ContactPage({ darkMode }: { darkMode: boolean }) {
             </div>
 
             <div>
-              <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-4">Réseaux sociaux</h3>
+              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Réseaux sociaux</h3>
               <div className="flex flex-wrap gap-3">
                 {[
                   { name: 'LinkedIn', color: '#0A66C2' },
@@ -2022,20 +2104,20 @@ function ContactPage({ darkMode }: { darkMode: boolean }) {
             </div>
 
             <div>
-              <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-4">Plateforme numérique</h3>
+              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Plateforme numérique</h3>
               <p className="text-sm text-[#6B7280] mb-3">
                 Accédez à notre plateforme numérique pour les ressources, publications et actualités de l'AJFIC.
               </p>
               <a
                 href="#"
-                className="inline-flex items-center gap-2 text-[#0D3B5E] font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors"
+                className={`inline-flex items-center gap-2 font-semibold text-sm border-b-2 border-[#E8705A] pb-0.5 hover:text-[#E8705A] transition-colors ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}
               >
                 Accéder à la plateforme →
               </a>
             </div>
 
             <div>
-              <h3 className="font-display text-xl font-bold text-[#0D3B5E] mb-4">Antennes régionales</h3>
+              <h3 className={`font-display text-xl font-bold mb-4 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Antennes régionales</h3>
               <p className="text-sm text-[#6B7280] mb-3">
                 L'AJFIC développe des antennes régionales dans les principales villes du Cameroun. Contactez-nous pour créer une antenne dans votre région.
               </p>
@@ -2050,7 +2132,7 @@ function ContactPage({ darkMode }: { darkMode: boolean }) {
             {sent ? (
               <div className={`rounded-2xl p-10 text-center shadow-sm ${darkMode ? 'bg-[#1a1a2e]' : 'bg-white'}`}>
                 <div className="text-4xl mb-4">✉️</div>
-                <h3 className="font-display text-2xl font-bold text-[#0D3B5E] mb-3">Message envoyé !</h3>
+                <h3 className={`font-display text-2xl font-bold mb-3 ${darkMode ? 'text-[#5DADE2]' : 'text-[#0D3B5E]'}`}>Message envoyé !</h3>
                 <p className="text-[#6B7280] text-sm mb-6">Nous vous répondrons dans les plus brefs délais, conformément à nos procédures internes.</p>
                 <button
                   onClick={() => { setSent(false); setCform({ nom: '', email: '', sujet: '', message: '' }) }}
