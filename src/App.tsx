@@ -297,7 +297,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
   return (
     <main>
       {/* Hero */}
-      <section className="relative bg-[#0D3B5E] overflow-hidden min-h-[80vh] flex items-center pb-32 lg:pb-24">
+      <section className={`relative overflow-hidden min-h-[80vh] flex items-center pb-32 lg:pb-24 ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div
           className="absolute inset-0 bg-cover bg-center opacity-15"
           style={{ backgroundImage: `url(${img1})` }}
@@ -536,7 +536,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Upcoming Events */}
-      <section ref={section4Ref} className={`parallax-section bg-[#0D3B5E] py-24 px-6 ${section4Visible ? 'visible' : ''}`}>
+      <section ref={section4Ref} className={`parallax-section py-24 px-6 ${section4Visible ? 'visible' : ''} ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Événements</span>
@@ -675,7 +675,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
       </section>
 
       {/* Vision Section */}
-      <section ref={section7Ref} className={`parallax-section bg-[#0D3B5E] py-24 px-6 ${section7Visible ? 'visible' : ''}`}>
+      <section ref={section7Ref} className={`parallax-section py-24 px-6 ${section7Visible ? 'visible' : ''} ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Notre Vision</span>
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
@@ -817,7 +817,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
             {shuffledImages.slice(0, 8).map((img, index) => (
               <div
                 key={index}
-                className="relative aspect-square overflow-hidden rounded-xl cursor-pointer group bg-[#0D3B5E]/10"
+                className={`relative aspect-square overflow-hidden rounded-xl cursor-pointer group ${darkMode ? 'bg-[#0f3460]/10' : 'bg-[#0D3B5E]/10'}`}
               >
                 <img
                   src={img.src}
@@ -875,7 +875,7 @@ function HomePage({ setPage, darkMode }: { setPage: (p: Page) => void; darkMode:
               alt="Équipe AJFIC en réunion"
               className="relative rounded-2xl w-full h-80 object-cover shadow-2xl"
             />
-            <div className="absolute bottom-6 left-6 right-6 bg-[#0D3B5E]/90 backdrop-blur-sm rounded-xl p-4 text-white">
+            <div className={`absolute bottom-6 left-6 right-6 backdrop-blur-sm rounded-xl p-4 text-white ${darkMode ? 'bg-[#0f3460]/90' : 'bg-[#0D3B5E]/90'}`}>
               <div className="text-xs text-[#E8705A] font-semibold tracking-wide uppercase mb-1">IUS PRIV</div>
               <div className="font-display text-sm font-semibold">Plateforme de communication juridique & fiscale</div>
             </div>
@@ -1005,7 +1005,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
                 icon: '📢'
               }
             ].map((commission, index) => (
-              <div key={index} className={`rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 group ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+              <div key={index} className={`rounded-2xl p-8 transition-colors duration-300 group ${darkMode ? 'bg-[#16213e] hover:bg-[#0f3460]' : 'bg-[#F7F4EF] hover:bg-[#0D3B5E]'}`}>
                 <div className="text-4xl mb-4">{commission.icon}</div>
                 <h3 className={`font-display font-bold text-xl mb-3 transition-colors ${darkMode ? 'text-[#5DADE2] group-hover:text-white' : 'text-[#0D3B5E] group-hover:text-white'}`}>
                   {commission.title}
@@ -1051,7 +1051,7 @@ function AboutPage({ darkMode }: { darkMode: boolean }) {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {TEAM.map((m, i) => (
-              <div key={m.name} className={`group rounded-2xl p-8 hover:bg-[#0D3B5E] transition-colors duration-300 ${darkMode ? 'bg-[#16213e]' : 'bg-[#F7F4EF]'}`}>
+              <div key={m.name} className={`group rounded-2xl p-8 transition-colors duration-300 ${darkMode ? 'bg-[#16213e] hover:bg-[#0f3460]' : 'bg-[#F7F4EF] hover:bg-[#0D3B5E]'}`}>
                 <div className="w-14 h-14 rounded-full bg-[#E8705A]/20 flex items-center justify-center mb-5 group-hover:bg-[#E8705A]/30">
                   <span className="font-display font-bold text-[#E8705A] text-xl">
                     {m.name.split(' ').pop()![0]}
@@ -1245,7 +1245,7 @@ function PublicationPage({ darkMode }: { darkMode: boolean }) {
 
   return (
     <main>
-      <section className={darkMode ? 'bg-[#0f3460] py-20 px-6' : 'bg-[#0D3B5E] py-20 px-6'}>
+      <section className={`py-20 px-6 ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Publication</span>
           <h1 className="font-display text-5xl font-bold text-white mb-4">Publication scientifique</h1>
@@ -1397,7 +1397,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
     return (
       <main className={`min-h-screen flex items-center justify-center px-6 py-24 ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F7F4EF]'}`}>
         <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-[#0D3B5E] rounded-full flex items-center justify-center mx-auto mb-8">
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
             <svg className="w-10 h-10 text-[#E8705A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
@@ -1423,7 +1423,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
   return (
     <main className={`min-h-screen ${darkMode ? 'bg-[#1a1a2e]' : 'bg-[#F7F4EF]'}`}>
       {/* Hero */}
-      <section className={darkMode ? 'bg-[#0f3460] py-16 px-6' : 'bg-[#0D3B5E] py-16 px-6'}>
+      <section className={`py-16 px-6 ${darkMode ? 'bg-[#0f3460]' : 'bg-[#0D3B5E]'}`}>
         <div className="max-w-2xl mx-auto text-center">
           <span className="text-[#E8705A] text-xs font-semibold tracking-[0.2em] uppercase mb-4 block">Inscription</span>
           <h1 className="font-display text-4xl font-bold text-white mb-3">Adhérer à l'AJFIC</h1>
@@ -1494,7 +1494,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
             return (
               <div key={s} className="flex items-center gap-2">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                  done ? 'bg-[#E8705A] text-white' : active ? 'bg-[#0D3B5E] text-white' : 'bg-[#EDE9E2] text-[#9CA3AF]'
+                  done ? 'bg-[#E8705A] text-white' : active ? (darkMode ? 'bg-[#0f3460] text-white' : 'bg-[#0D3B5E] text-white') : 'bg-[#EDE9E2] text-[#9CA3AF]'
                 }`}>
                   {done ? '✓' : n}
                 </div>
@@ -1559,7 +1559,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
             <button
               onClick={() => setStep(2)}
               disabled={!form.nom || !form.prenom || !form.email}
-              className="mt-8 w-full py-3.5 bg-[#0D3B5E] text-white font-semibold rounded-xl text-sm hover:bg-[#082A45] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className={`mt-8 w-full py-3.5 text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${darkMode ? 'bg-[#0f3460] hover:bg-[#1a4a6e]' : 'bg-[#0D3B5E] hover:bg-[#082A45]'}`}
             >
               Continuer →
             </button>
@@ -1602,7 +1602,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
               <button
                 onClick={() => setStep(3)}
                 disabled={!form.profil}
-                className="flex-1 py-3.5 bg-[#0D3B5E] text-white font-semibold rounded-xl text-sm hover:bg-[#082A45] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className={`flex-1 py-3.5 text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${darkMode ? 'bg-[#0f3460] hover:bg-[#1a4a6e]' : 'bg-[#0D3B5E] hover:bg-[#082A45]'}`}
               >
                 Continuer →
               </button>
@@ -1643,7 +1643,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
                           <div className="text-2xl mb-2">📎</div>
                           <p className="text-sm text-[#6B7280] mb-1">Glissez-déposez votre fichier ici</p>
                           <p className="text-xs text-[#9CA3AF] mb-3">{field.hint}</p>
-                          <label className="cursor-pointer inline-block px-4 py-2 bg-[#0D3B5E] text-white text-xs font-semibold rounded-full hover:bg-[#082A45] transition-colors">
+                          <label className={`cursor-pointer inline-block px-4 py-2 text-white text-xs font-semibold rounded-full transition-colors ${darkMode ? 'bg-[#0f3460] hover:bg-[#1a4a6e]' : 'bg-[#0D3B5E] hover:bg-[#082A45]'}`}>
                             Parcourir
                             <input
                               type="file"
@@ -1691,7 +1691,7 @@ function AdhesionPage({ darkMode }: { darkMode: boolean }) {
               <button
                 onClick={() => setStep(4)}
                 disabled={!files.identity || !files.cv || !files.proof}
-                className="flex-1 py-3.5 bg-[#0D3B5E] text-white font-semibold rounded-xl text-sm hover:bg-[#082A45] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className={`flex-1 py-3.5 text-white font-semibold rounded-xl text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${darkMode ? 'bg-[#0f3460] hover:bg-[#1a4a6e]' : 'bg-[#0D3B5E] hover:bg-[#082A45]'}`}
               >
                 Continuer →
               </button>
@@ -1935,7 +1935,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
                 key={pack.name}
                 className={`relative rounded-3xl p-8 transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 ${
                   pack.highlight
-                    ? 'bg-[#0D3B5E] text-white shadow-2xl border-2 border-[#E8705A] scale-105'
+                    ? (darkMode ? 'bg-[#0f3460] text-white shadow-2xl border-2 border-[#E8705A] scale-105' : 'bg-[#0D3B5E] text-white shadow-2xl border-2 border-[#E8705A] scale-105')
                     : darkMode
                     ? 'bg-[#16213e] border border-white/10'
                     : 'bg-[#F7F4EF] border border-[#EDE9E2]'
@@ -1987,7 +1987,7 @@ function SponsoringPage({ darkMode }: { darkMode: boolean }) {
                   className={`w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-95 ${
                     pack.highlight
                       ? 'bg-[#E8705A] hover:bg-[#C85A45] text-white'
-                      : 'bg-[#0D3B5E] hover:bg-[#082A45] text-white'
+                      : (darkMode ? 'bg-[#0f3460] hover:bg-[#1a4a6e] text-white' : 'bg-[#0D3B5E] hover:bg-[#082A45] text-white')
                   }`}
                 >
                   Demander un devis
